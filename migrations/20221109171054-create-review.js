@@ -2,24 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('Drivers', {
+    return queryInterface.createTable('Reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      drivePoint: {
+      star: {
         type: Sequelize.INTEGER
       },
-      ItemId: {
-	type: Sequelize.INTEGER,
+      description: {
+        type: Sequelize.STRING
+      },
+      UserId: {
+        type: Sequelize.INTEGER,
 	references: {
-	  model: "Items",
-	  key: "id"
+	  model: "Users",
+	  key: "id",
 	}
       },
       createdAt: {
@@ -33,6 +33,6 @@ module.exports = {
     });
   },
   down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Drivers');
+    return queryInterface.dropTable('Reviews');
   }
 };

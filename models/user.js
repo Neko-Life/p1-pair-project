@@ -11,8 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsTo(models.Driver);
-      User.hasMany(models.History);
     }
   }
   User.init({
@@ -20,14 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     role: DataTypes.STRING,
-    totalTransaction: DataTypes.INTEGER,
-    DriverId: {
-      type: DataTypes.INTEGER,
-      references: {
-	model: "Drivers",
-	key: "id"
-      }
-    },
+    totalTransaction: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',
