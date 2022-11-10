@@ -11,7 +11,9 @@ const { compareSync } = require("bcryptjs");
 
 sequelize.sync({ alter: true })
   .then(() => {
-    console.log("Database synced successfully");
+    console.log("==================================");
+    console.log("// Database synced successfully //");
+    console.log("==================================");
   })
   .catch(err => console.error(err, "<<<<<< SYNC ERROR") );
 //////
@@ -83,7 +85,7 @@ router.post("/login", (req, res) => {
     if (!user || !compareSync(password, user.password)) {
       return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
     }
-    console.log(">>>>>> CORRECT PASSWORD 	<<<<<<<");
+    console.log(">>>>>> CORRECT PASSWORD <<<<<<<");
     req.session.userId = user.id;
     res.redirect("/");
   })
