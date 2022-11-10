@@ -1,5 +1,7 @@
 "use strict";
 
+const { formatPhoneNumber } = require("./formatter");
+
 const baseParam = (paramObject = {}) => {
   if (paramObject?.errors) {
     if (Array.isArray(paramObject.errors.errors)) paramObject.errors = paramObject.errors.errors;
@@ -12,6 +14,7 @@ const baseParam = (paramObject = {}) => {
     paramObject.user.profile = null;
   }
   return {
+    formatPhoneNumber,
     user: null,
     errors: [],
     drivers: [],

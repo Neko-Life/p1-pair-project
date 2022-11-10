@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { formatPhoneNumber } = require("../helper/formatter");
 module.exports = (sequelize, DataTypes) => {
   class Profile extends Model {
     /**
@@ -15,20 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     get formattedPhoneNumber() {
-      const arr = this.phoneNumber.split("").reverse();
-      const newArr = [];
-
-      let temp = "";
-      for (const num of arr) {
-	if (newArr.length && newArr.length % 4 === 0) {
-	  newArr.push(temp);
-	  temp = "";
-	}
-	temp += num;
-      }
-      if (temp.length) newArr.push(temp);
-
-      return newArr.map(el => el.split("").reverse().join("")).reverse().join("-");
+      return formatPhoneNumber(this.phoneNumber);
     }
   }
   Profile.init({

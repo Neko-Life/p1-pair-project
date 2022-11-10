@@ -189,7 +189,7 @@ router.get("/settings", (req, res) => {
   }
 
   if (!req.session.user.profile) {
-    Profile.findOne()
+    Profile.findOne({ where: { UserId: req.session.user.id }})
     .then(profile => {
       req.session.user.profile = profile;
       res.render("settings", baseParam({ user: req.session.user }));
@@ -228,11 +228,11 @@ router.post("/settings", (req, res) => {
   User.update(userOptions, { where: { id: req.session.user.id } })
   .then(user => {
     tempNewUser = user;
-    return Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.profile.id } });
+    return Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.user.id } });
   })
   .then(profile => {
     tempNewUser.profile = profile;
-    req.session.user = tempNewUser;
+    // req.session.user = tempNewUser;
     res.redirect("/");
   })
   .catch(err => {

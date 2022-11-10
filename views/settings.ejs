@@ -58,7 +58,7 @@
 	<label for="phoneNumber">New Phone Number:</label>
       </div>
       <div>
-	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= user.profile.formattedPhoneNumber %>">
+	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= formatPhoneNumber(user.profile.phoneNumber) %>">
       </div>
     </div>
     <div>
