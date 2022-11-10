@@ -19,10 +19,18 @@ module.exports = {
         type: Sequelize.STRING
       },
       DriverId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+	references: {
+	  model: "Drivers",
+	  key: "id",
+	}
       },
       UserId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+	references: {
+	  model: "Users",
+	  key: "id",
+	}
       },
       satisfactionPoint: {
         type: Sequelize.INTEGER
