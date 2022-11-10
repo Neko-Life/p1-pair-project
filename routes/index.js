@@ -8,6 +8,7 @@ const router = Router();
 const { User, Driver, Order, Profile, sequelize } = require("../models");
 const { baseParam } = require("../helper/util");
 const { compareSync } = require("bcryptjs");
+const { Op } = require("sequelize");
 
 sequelize.sync({ alter: true })
   .then(() => {
@@ -42,7 +43,6 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/reviews", (req, res) => {});
 router.get("/signup", (req, res) => {
   res.render("signup", { errors: req.query.errors });
 });
@@ -96,32 +96,32 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/go/:id", (req, res) => {
-  let { id } = req.params
-  let { type, destination, pickupAt, DriverId  } = req.body
-  req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: id, satisfactionPoint: 1 })
-  .then( res => {
-    return res
-  })
-  .catch(err => {
-    res.send(err)
-  })
+  const { id } = req.params
+  const { type, destination, pickupAt, DriverId  } = req.body
+  req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: id, satisfactionPoint: 0 });
+
+  res.redirect("/ongoing");
+
   // res.send("DO SOME STUFF AND GO TO /ongoing");
 });
 
 router.get("/ongoing", (req, res) => {
-  let { end, DriverId, UserId } = req.query
+  const { end } = req.query
 
-  res.render('ongoing', { end, DriverId, UserId })
+  res.render('ongoing', { end })
 })
 
 router.post("/ongoing", (req, res) => {
-  let { OrderId, DriverId, UserId, point } = req.body
+  let { point } = req.body
+  const { DriverId, UserId } = req.session.order;
 
-  if (!point) point = 1;
+  if (!point) point = 0;
 
-  Order.update({ satisfactionPoint: point }, {where: {id: OrderId} })
+  req.session.order.satisfactionPoint = point;
+
+  req.session.order.save()
   .then(_ => {
-    return Driver.increment({ totalPoint: point }, { where: { id: DriverId } })
+    return Driver.increment({ totalPoint: 1 + point }, { where: { id: DriverId } })
   })
   .then(_ => {
     return User.increment({ totalPoint: 1 }, { where: { id: UserId } })
@@ -130,20 +130,20 @@ router.post("/ongoing", (req, res) => {
     res.redirect('/history')
   })
   .catch(err => {
+    console.error(err);
     res.send(err)
   })
 })
 
 router.get('/history', (req, res) => {
   let { DriverId, UserId, point, search } = req.query
-  let options = { include: { all: true } }
+  let options = { include: { all: true }, where: { UserId } }
 
-  if (satisfactionPoint) options.where = { satisfactionPoint: {[Op.eq]: point}}
-  else if (DriverId) options.where = { DriverId }
-  else if (UserId) options.where = { UserId }
-  else if (search) options.where = { 
-    destination: { name: {[Op.iLike]: `%${search}%` } }, 
-    pickupAt: { name: {[Op.iLike]: `%${search}%` } }
+  if (point) options.where.satisfactionPoint = {[Op.eq]: point}
+  if (DriverId) options.where.DriverId = DriverId
+  if (search) {
+    options.where.destination = { [Op.iLike]: `%${search}%` }
+    options.where.pickupAt = { [Op.iLike]: `%${search}%` }
   }
   
   Order.findAll(options)
@@ -151,6 +151,7 @@ router.get('/history', (req, res) => {
     res.render('history', { orders, } )
   })
   .catch(err => {
+    console.error(err);
     res.send(err)
   })
 })

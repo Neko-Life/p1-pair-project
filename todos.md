@@ -11,3 +11,7 @@ todos partials: form order, form login
 
 learn and use bcrypt password hook
 learn and use sessions
+
+nodemailer
+hooks driver rank, user role
+validation role, rank, order type, in database etc
