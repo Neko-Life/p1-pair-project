@@ -67,6 +67,12 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.get("/ongoing", (req, res) => {
+  let { end } = req.query
+
+  res.render('ongoing', { end })
+})
+
 router.get("/settings/:userId", (req, res) => {});
 router.get("/logout/:userId", (req, res) => {});
 
