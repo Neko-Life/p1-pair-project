@@ -20,19 +20,13 @@ sequelize.sync({ alter: true })
 //////
 
 router.get("/", (req, res) => {
-  if (req.session.userId) {
-    let foundUser;
-    User.findByPk(req.session.userId)
-    .then(user => {
-      if (!user) {
-	delete req.session.userId;
-	return res.render("landing", baseParam({ errors: ["Invalid session, please retry login"] }));
-      }
-      foundUser = user;
-      return Driver.findAll();
-    })
+  if (req.session.order) {
+    return res.redirect("/ongoing");
+  }
+  if (req.session.user) {
+    Driver.findAll()
     .then(drivers => {
-      res.render("landing", baseParam({ user: foundUser, drivers }));
+      res.render("landing", baseParam({ user: req.session.user, drivers }));
     })
     .catch(err => {
       console.error(err);
@@ -44,7 +38,10 @@ router.get("/", (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-  res.render("signup", { errors: req.query.errors });
+  if (req.session.order) {
+    return res.redirect("/ongoing");
+  }
+  res.render("signup", baseParam());
 });
 
 router.post("/signup", (req, res) => {
@@ -86,7 +83,7 @@ router.post("/login", (req, res) => {
       return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
     }
     console.log(">>>>>> CORRECT PASSWORD <<<<<<<");
-    req.session.userId = user.id;
+    req.session.user = user;
     res.redirect("/");
   })
   .catch(err => {
@@ -95,10 +92,9 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/go/:id", (req, res) => {
-  const { id } = req.params
+router.post("/go", (req, res) => {
   const { type, destination, pickupAt, DriverId  } = req.body
-  req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: id, satisfactionPoint: 0 });
+  req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 });
 
   res.redirect("/ongoing");
 
@@ -127,6 +123,7 @@ router.post("/ongoing", (req, res) => {
     return User.increment({ totalPoint: 1 }, { where: { id: UserId } })
   })
   .then(_ => {
+    delete req.session.order;
     res.redirect('/history')
   })
   .catch(err => {
@@ -136,6 +133,9 @@ router.post("/ongoing", (req, res) => {
 })
 
 router.get('/history', (req, res) => {
+  if (req.session.order) {
+    return res.redirect("/ongoing");
+  }
   let { DriverId, UserId, point, search } = req.query
   let options = { include: { all: true }, where: { UserId } }
 
@@ -148,7 +148,7 @@ router.get('/history', (req, res) => {
   
   Order.findAll(options)
   .then(orders => {
-    res.render('history', { orders, } )
+    res.render('history', { orders, user: req.session.user } )
   })
   .catch(err => {
     console.error(err);
@@ -156,9 +156,22 @@ router.get('/history', (req, res) => {
   })
 })
 
-router.get("/settings/:userId", (req, res) => {});
-router.get("/logout/:userId", (req, res) => {
-  delete req.session.userId;
+router.get("/settings", (req, res) => {
+  if (req.session.order) {
+    return res.redirect("/ongoing");
+  }
+
+});
+
+router.post("/settings", (req, res) => {
+
+});
+
+router.get("/logout", (req, res) => {
+  if (req.session.order) {
+    return res.redirect("/ongoing");
+  }
+  delete req.session.user;
   res.redirect("/");
 });
 
