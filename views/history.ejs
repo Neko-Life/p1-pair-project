@@ -21,13 +21,13 @@
     
     <form action="/history" method="get">
       <select name="DriverId" id="DriverId">
-        <option value="">Sort by Driver</option>
+        <option value="">Filter by Driver</option>
         <% drivers.forEach((el, i) => { %>
           <option value="<%= el.id %>"><%= el.name %></option>
         <% }) %>
       </select>
       <select name="point" id="point">
-        <option value="">Sort by Rating </option>
+        <option value="">Filter by Rating </option>
         <option value="0">Not Rated <span class="fa fa-star checked"></span></option>
         <option value="1">1 Star </option>
         <option value="2">2 Stars </option>

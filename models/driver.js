@@ -44,5 +44,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Driver',
   });
+
+  Driver.afterUpdate((instance, options) => {
+    if (instance.totalPoint == 200) instance.rank = 'Professional'
+    if (instance.totalPoint == 120) instance.rank = 'Apprentice'
+    if (instance.totalPoint == 50) instance.rank = 'Rookie'
+  });
+  
   return Driver;
 };

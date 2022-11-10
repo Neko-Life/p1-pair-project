@@ -36,7 +36,7 @@
 	<select name="DriverId">
 	  <option value="" disabled selected>Select a Driver</option>
 	  <% for (const data of drivers) { %>
-	    <option value="<%= data.id %>" ><%= data.name %></option>
+	    <option value="<%= data.id %>" ><%= data.name %> ----- <%= data.rank %></option>
 	  <% } %>
 	</select>
       </div>

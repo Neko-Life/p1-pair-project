@@ -20,8 +20,12 @@ validation role, rank, order type, in database etc
 
 
 
-test formattedPhoneNumber
-mengecek tampilan validasi
-add delete account
-hooks driver rank, user role
+test formattedPhoneNumber f
+add delete account f
+hooks user role f
+muncul rank di dropdown f
+
+mengecek tampilan validasi q
+hooks driver rank
 sort history harusnya filter
+muncul rank di driver select
