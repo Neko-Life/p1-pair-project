@@ -96,13 +96,63 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/go/:id", (req, res) => {
-  res.send("DO SOME STUFF AND GO TO /ongoing");
+  let { id } = req.params
+  let { type, destination, pickupAt, DriverId  } = req.body
+  req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: id, satisfactionPoint: 1 })
+  .then( res => {
+    return res
+  })
+  .catch(err => {
+    res.send(err)
+  })
+  // res.send("DO SOME STUFF AND GO TO /ongoing");
 });
 
 router.get("/ongoing", (req, res) => {
-  let { end } = req.query
+  let { end, DriverId, UserId } = req.query
 
-  res.render('ongoing', { end })
+  res.render('ongoing', { end, DriverId, UserId })
+})
+
+router.post("/ongoing", (req, res) => {
+  let { OrderId, DriverId, UserId, point } = req.body
+
+  if (!point) point = 1;
+
+  Order.update({ satisfactionPoint: point }, {where: {id: OrderId} })
+  .then(_ => {
+    return Driver.increment({ totalPoint: point }, { where: { id: DriverId } })
+  })
+  .then(_ => {
+    return User.increment({ totalPoint: 1 }, { where: { id: UserId } })
+  })
+  .then(_ => {
+    res.redirect('/history')
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
+router.get('/history', (req, res) => {
+  let { DriverId, UserId, point, search } = req.query
+  let options = { include: { all: true } }
+
+  if (satisfactionPoint) options.where = { satisfactionPoint: {[Op.eq]: point}}
+  else if (DriverId) options.where = { DriverId }
+  else if (UserId) options.where = { UserId }
+  else if (search) options.where = { 
+    destination: { name: {[Op.iLike]: `%${search}%` } }, 
+    pickupAt: { name: {[Op.iLike]: `%${search}%` } }
+  }
+  
+  Order.findAll(options)
+  .then(orders => {
+    res.render('history', { orders, } )
+  })
+  .catch(err => {
+    res.send(err)
+  })
 })
 
 router.get("/settings/:userId", (req, res) => {});
