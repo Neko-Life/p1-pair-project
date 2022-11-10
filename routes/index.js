@@ -17,8 +17,24 @@ const loggedIn = new Map();
 //////
 
 router.get("/", (req, res) => {
-  if (req.smtsmt) {
-
+  if (req.session.userId) {
+    let foundUser;
+    User.findByPk(req.session.userId)
+    .then(user => {
+      if (!user) {
+	delete req.session.userId;
+	return res.render("landing", baseParam({ errors: ["Invalid session, please retry login"] }));
+      }
+      foundUser = user;
+      return Driver.findAll();
+    })
+    .then(drivers => {
+      res.render("landing", baseParam({ user: foundUser, drivers }));
+    })
+    .catch(err => {
+      console.error(err);
+      res.render("landing", baseParam({ errors: err }));
+    });
   } else {
     res.render("landing" , baseParam());
   }
@@ -59,12 +75,17 @@ router.post("/login", (req, res) => {
       return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
     }
     console.log(">>>>>> CORRECT PASSWORD 	<<<<<<<");
+    req.session.userId = user.id;
     res.redirect("/");
   })
   .catch(err => {
     console.error(err);
     res.render("landing", baseParam({ errors: err }));
   });
+});
+
+router.post("/go/:id", (req, res) => {
+  res.send("DO SOME STUFF AND GO TO /ongoing");
 });
 
 router.get("/ongoing", (req, res) => {
@@ -74,6 +95,9 @@ router.get("/ongoing", (req, res) => {
 })
 
 router.get("/settings/:userId", (req, res) => {});
-router.get("/logout/:userId", (req, res) => {});
+router.get("/logout/:userId", (req, res) => {
+  delete req.session.userId;
+  res.redirect("/");
+});
 
 module.exports = router;

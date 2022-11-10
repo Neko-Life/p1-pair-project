@@ -7,6 +7,7 @@ const baseParam = (paramObject = {}) => {
   return {
     user: null,
     errors: [],
+    drivers: [],
     ...paramObject
   }
 }
