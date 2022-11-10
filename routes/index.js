@@ -46,17 +46,27 @@ router.get("/signup", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
+  console.log(req.body);
   if (!User.validPassword(req.body)) {
     return res.render("signup", { errors: ["Please fill the password correctly!"] });
   }
   const { username, email, phoneNumber, password } = req.body;
 
-  User.create({ username, email, phoneNumber, password })
+  User.create({ username, email, password })
+  .then(() => User.findOne({ where: { email: email } }))
+  .then(user => Profile.create({ phoneNumber, UserId: user.id }))
   .then(() => {
     res.redirect("/");
   })
   .catch(err => {
     console.error(err);
+    
+    User.destroy({
+      where: {
+	email: email,
+      }
+    }).catch(console.error);
+
     return res.render("signup", baseParam({ errors: err }));
   });
 });

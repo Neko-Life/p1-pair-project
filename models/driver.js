@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
 	notNull: true,
       }
     },
-    rank: DataTypes.STRING,
+    rank: {
+      type: DataTypes.STRING,
+      defaultValue: "Beginner",
+    },
     totalPoint: {
       type: DataTypes.INTEGER,
       defaultValue: 0,

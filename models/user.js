@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
 	notEmpty: true,
 	notNull: true,
 	match(value) {
-	  if (!value || !value.match(/[a-z0-9_-]+/)?.length) {
+	  if (!value || value.match(/[^a-z0-9_-]/)?.length) {
 	    throw new Error("username can only consist of lowercase letter, underscore, minus, and/or number");
 	  }
 	},
@@ -70,11 +70,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role:  {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-	notEmpty: true,
-	notNull: true,
-      }
+      defaultValue: "Regular",
     },
   }, {
     sequelize,
