@@ -95,6 +95,7 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/go", (req, res) => {
+  if (!req.session.user?.id) return res.redirect("/");
   const { type, destination, pickupAt, DriverId  } = req.body
   req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 });
 
@@ -102,12 +103,21 @@ router.post("/go", (req, res) => {
 });
 
 router.get("/ongoing", (req, res) => {
-  const { end } = req.query
+  if (!req.session.user?.id) return res.redirect("/");
+  let { end } = req.query
+  if (req.session.order?.ETAStartDate) req.session.order.ETAStartDate = new Date(req.session.order.ETAStartDate);
+  const lastEta = req.session.order.ETA ? req.session.order.ETA - ((new Date().getTime() - req.session.order.ETAStartDate.getTime()) / 1000) : -1;
+  const ETA = req.session.order.ETA === undefined ? Math.floor(Math.random() * 30 * 60 + 600) : lastEta;
+  if (ETA < 0) end = "end";
+  if (!req.session.order.ETA) req.session.order.ETA = ETA;
+  if (!req.session.order.ETAStartDate) req.session.order.ETAStartDate = new Date();
+  console.log(req.session.order);
 
-  res.render('ongoing', { end })
+  res.render('ongoing', { end, ETA });
 })
 
 router.post("/ongoing", (req, res) => {
+  if (!req.session.user?.id) return res.redirect("/");
   let { point } = req.body
   const { DriverId, UserId } = req.session.order;
 
@@ -143,7 +153,7 @@ router.post("/ongoing", (req, res) => {
 })
 
 router.get('/history', (req, res) => {
-  if (!req.session.user) return res.redirect("/")
+  if (!req.session.user?.id) return res.redirect("/");
   if (req.session.order) return res.redirect("/ongoing");
 
   let { info, DriverId, point, search } = req.query
@@ -173,6 +183,7 @@ router.get('/history', (req, res) => {
 })
 
 router.get("/settings", (req, res) => {
+  if (!req.session.user?.id) return res.redirect("/");
   if (req.session.order) {
     return res.redirect("/ongoing");
   }
@@ -193,6 +204,7 @@ router.get("/settings", (req, res) => {
 });
 
 router.post("/settings", (req, res) => {
+  if (!req.session.user?.id) return res.redirect("/");
   console.log(req.body);
   if (req.body.password?.length && !User.validPassword(req.body)) {
     return res.render("settings", baseParam({ user: req.session.user, errors: ["Please fill the password correctly!"] }));
@@ -237,6 +249,7 @@ router.post("/settings", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  if (!req.session.user?.id) return res.redirect("/");
   if (req.session.order) {
     return res.redirect("/ongoing");
   }

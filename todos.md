@@ -9,9 +9,19 @@ hook afterIncrement User, use review point to decide Driver's point incrementing
 todos page: landing, register, signup, ongoing, settings, history, pop up review
 todos partials: form order, form login
 
-learn and use bcrypt password hook
-learn and use sessions
+DONE: learn and use bcrypt password hook
+DONE: learn and use sessions
 
-nodemailer
+DONE: nodemailer
 hooks driver rank, user role
 validation role, rank, order type, in database etc
+
+
+
+
+
+test formattedPhoneNumber
+mengecek tampilan validasi
+add delete account
+hooks driver rank, user role
+sort history harusnya filter
