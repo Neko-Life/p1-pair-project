@@ -7,6 +7,7 @@ const router = Router();
 //////
 const { User, Driver, Order, Profile } = require("../models");
 const { baseParam } = require("../helper/util");
+const { compareSync } = require("bcryptjs");
 
 /**
  * @type {Map<????, User>}
@@ -53,7 +54,8 @@ router.post("/login", (req, res) => {
     }
   })
   .then(user => {
-    if (!user) {
+    console.log(user, "<<<<<<<<<< USER");
+    if (!user || !compareSync(password, user.password)) {
       return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
     }
     res.redirect("/");

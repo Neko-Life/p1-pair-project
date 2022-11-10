@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
       if (!body.password) return false;
       return body.password === body.repeatPassword;
     }
+
+    hashPassword() {
+      if (!this.hashed) {
+	const salt = genSaltSync(13);
+	this.password = hashSync(this.password, salt);
+	this.hashed = true;
+      }
+    }
   }
   User.init({
     username: {
@@ -74,8 +82,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.beforeCreate((instance, options) => {
-    const salt = genSaltSync(13);
-    instance.password = hashSync(instance.password, salt);
+    instance.hashPassword();
   });
+
+  User.beforeBulkCreate((instances, options) => {
+    instances.forEach(instance => instance.hashPassword());
+  });
+
   return User;
 };
