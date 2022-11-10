@@ -22,10 +22,13 @@ validation role, rank, order type, in database etc
 
 DONE: test formattedPhoneNumber f
 add delete account f
-hooks user role f
+hooks user role f ->>> JADI UPDATE ROLE SETIAP KALI KE LANDING PAGE ---> DONE
 DONE: muncul rank di dropdown f
 
-mengecek tampilan validasi q
-hooks driver rank
-sort history harusnya filter
-muncul rank di driver select
+DONE: mengecek tampilan validasi q
+DONE: hooks driver rank q
+DONE: sort history harusnya filter q
+DONE: muncul rank di driver select q
+
+DONE: VALIDATE order type -> validation & index/controller validation
+Role User yang muncul & TotalPoint yg muncul akan terpanggil setiap kali ke landing page & setting page (refreshable)

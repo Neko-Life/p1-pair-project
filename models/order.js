@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
 	notEmpty: true,
 	notNull: true,
+      isThere(value) {
+        if (value !== 'WalkRide' && value !== 'WalkCar' && value !== 'WalkTaxi') {
+          throw new Error('The inputed Order Type is not registered!');
+        }
+      }
       }
     },
     destination: {

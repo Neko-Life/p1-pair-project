@@ -25,11 +25,23 @@ router.get("/", (req, res) => {
   if (req.session.order) {
     return res.redirect("/ongoing");
   }
-
+  
   let { errors } = req.query
 
   if (req.session.user) {
-    Driver.findAll()
+    Profile.findByPk(req.session.user.id)
+    .then(profile => {
+      if (profile.totalPoint >= 100) {
+        return User.update({role:'Platinum'}, {where: {id:req.session.user.id}}) 
+      } else if (profile.totalPoint >= 50) { 
+        return User.update({role:'Gold'}, {where: {id:req.session.user.id}} )
+      } else if (profile.totalPoint >= 20) {
+        return User.update({role:'Silver'}, {where: {id:req.session.user.id}})
+      }
+    })
+    .then(_ => {
+      return Driver.findAll()
+    })
     .then(drivers => {
       console.log(req.session.user)
       res.render("landing", baseParam({ user: req.session.user, drivers, errors }));
@@ -109,7 +121,10 @@ router.post("/go", (req, res) => {
   if (!type || !destination || !pickupAt || !DriverId || destination.replace(/ /g,"").length == 0 || pickupAt.replace(/ /g,"").length == 0){
     let eQuery = '';
     if(!type) eQuery += 'Type of Ride must be choosed,'
-    
+    else if (type !== 'WalkRide' && type !== 'WalkCar' && type !== 'WalkTaxi') {
+      eQuery += 'The inputed Order Type is not registered,'
+    }
+
     if(!destination) eQuery += 'Destination must be filled,'
     else if(destination.replace(/ /g,"").length == 0) eQuery += 'Destination cannot be empty,'
     
@@ -153,7 +168,7 @@ router.post("/ongoing", (req, res) => {
     return Driver.increment({ totalPoint: 1 + point }, { where: { id: DriverId } })
   })
   .then(_ => {
-    return Profile.increment({ totalPoint: 1 }, { where: { UserId } })
+    return Profile.increment({ totalPoint: 9 }, { where: { UserId } })
   })
   .then(_ => {
     return Order.findOne({order: [[ 'id', 'DESC' ]], include: [User, Driver]});
@@ -278,5 +293,24 @@ router.get("/logout", (req, res) => {
   delete req.session.user;
   res.redirect("/");
 });
+
+///testing
+router.get("/testingProfiles/:point", (req, res) => {
+  let { point } = req.params
+  let profiles;
+  
+  Profile.findByPk(req.session.user.id)
+  .then( result => {
+    profiles = result
+    return Profile.increment({totalPoint:point}, {where: {UserId:req.session.user.id}})
+  })
+  .then(_ => {
+    res.redirect('/?done')
+  })
+  .catch(err => {
+    console.log(err);
+    res.send(err)
+  })
+})
 
 module.exports = router

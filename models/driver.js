@@ -46,10 +46,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Driver.afterUpdate((instance, options) => {
-    if (instance.totalPoint == 200) instance.rank = 'Professional'
-    if (instance.totalPoint == 120) instance.rank = 'Apprentice'
-    if (instance.totalPoint == 50) instance.rank = 'Rookie'
+    if (instance.totalPoint >= 200) instance.rank = 'Professional'
+    else if (instance.totalPoint >= 120) instance.rank = 'Apprentice'
+    else if (instance.totalPoint >= 50) instance.rank = 'Rookie'
   });
-  
+
   return Driver;
 };

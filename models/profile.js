@@ -73,5 +73,15 @@ module.exports = (sequelize, DataTypes) => {
       instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
     });
   });
+
+  // Profile.afterUpdate((instance, options) => {
+  //   if (instance.totalPoint >= 100){
+  //     this.association.OtherModel.target.update({role:"Platinum"})
+  //   } else if (instance.totalPoint >= 50) {
+  //     this.association.OtherModel.target.update({role:"Gold"})
+  //   } else if (instance.totalPoint >= 20){
+  //     this.association.OtherModel.target.update({role:"Silver"})
+  //   }
+  // })
   return Profile;
 };
