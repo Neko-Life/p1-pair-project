@@ -6,7 +6,7 @@
 <%- include("partials/navbar", { user }) %>
 
 <section>
-  <% if (user.id) { %>
+  <% if (user?.id) { %>
     <%- include("partials/order", { errors, user, drivers }) %>
   <% } else { %>
     <%- include("partials/login", { errors, user, drivers } ) %>
