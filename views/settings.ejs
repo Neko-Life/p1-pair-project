@@ -7,30 +7,50 @@
 
 <section>
   <div>
-    <h1>Settings</h1>
+    <h1>Profile</h1>
   </div>
-  <form action="/settings/<%= user.id %>" method="POST">
+  <form action="/settings" method="POST">
     <div>
       <div>
-	<label for="profileName">Profile Name:</label>
+	<label for="username">Username:</label>
       </div>
       <div>
-	<input type="text" name="profileName">
+	<input type="text" name="username" placeholder="Username">
       </div>
     </div>
-
     <div>
       <div>
-	<label for="">:</label>
+	<label for="email">Email:</label>
       </div>
       <div>
-	<input type="text" name="">
+	<input type="text" name="email" placeholder="Email">
       </div>
     </div>
-
     <div>
-      <input type="submit" value="Update">
+      <div>
+	<label for="phoneNumber">Phone Number:</label>
+      </div>
+      <div>
+	<input type="text" name="phoneNumber" placeholder="Phone Number">
+      </div>
     </div>
+    <div>
+      <div>
+	<label for="password">Password</label>
+      </div>
+      <div>
+	<input type="password" name="password" placeholder="Password">
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="repeatPassword">Repeat your password:</label>
+      </div>
+      <div>
+	<input type="password" name="repeatPassword" placeholder="Repeat your password">
+      </div>
+    </div>
+    <input type="submit" value="Update Profile">
   </form>
 </section>
 </body>

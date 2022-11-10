@@ -7,15 +7,6 @@
   </div>
   <div>
     <ul>
-      <li>
-	<a href="/reviews">
-	  Customer Reviews
-	</a>
-      </li>
-    </ul>
-  </div>
-  <div>
-    <ul>
     <% if (user) { %>
       <li>
 	<div>
@@ -24,17 +15,25 @@
 	<!-- dropdown menu -->
 	<div class="hidden absolute">
 	  <div>
-	    <a></a>
+	    <a href="/settings">Profile</a>
 	  </div>
 	  <div>
-	    <a href="/settings/<%= user.id %>">Settings</a>
-	  </div>
-	  <div>
-	    <a href="/logout/<%= user.id %>">Logout</a>
+	    <a href="/logout">Logout</a>
 	  </div>
 	</div>
 	<!-- end dropdown menu -->
       </li>
+      <% } else { %>
+	<li>
+	  <div>
+	    <a href="/signup">Sign Up</a>
+	  </div>
+	</li>
+	<li>
+	  <div>
+	    <a href="/">Login</a>
+	  </div>
+	</li>
       <% } %>
     </ul>
   </div>
