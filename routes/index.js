@@ -1,7 +1,8 @@
 "use strict";
 
 const { Router } = require("express");
-
+const invoicer = require('../helper/invoicer')
+const { automailer, mailDetails } = require('../helper/automailer')
 const router = Router();
 
 //////
@@ -115,17 +116,26 @@ router.post("/ongoing", (req, res) => {
   if (!point) point = 0;
 
   req.session.order.satisfactionPoint = point;
-
+  req.session.order = Order.build(req.session.order);
   req.session.order.save()
   .then(_ => {
     return Driver.increment({ totalPoint: 1 + point }, { where: { id: DriverId } })
   })
   .then(_ => {
-    return User.increment({ totalPoint: 1 }, { where: { id: UserId } })
+    return Profile.increment({ totalPoint: 1 }, { where: { UserId } })
   })
   .then(_ => {
+    return Order.findOne({order: [[ 'id', 'DESC' ]], include: [User, Driver]});
+  })
+  .then(order => {
+    mailDetails.text = invoicer(order)
+    mailDetails.to = order.User.email
+    return automailer.sendMail(mailDetails)
+  })
+  .then(info => {
+    
     delete req.session.order;
-    res.redirect('/history')
+    res.send(`Message sent to: ${info.accepted[0]}`);
   })
   .catch(err => {
     console.error(err);
@@ -229,4 +239,4 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-module.exports = router;
+module.exports = router
