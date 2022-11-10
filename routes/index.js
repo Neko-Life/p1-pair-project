@@ -25,11 +25,14 @@ router.get("/", (req, res) => {
   if (req.session.order) {
     return res.redirect("/ongoing");
   }
+
+  let { errors } = req.query
+
   if (req.session.user) {
     Driver.findAll()
     .then(drivers => {
       console.log(req.session.user)
-      res.render("landing", baseParam({ user: req.session.user, drivers }));
+      res.render("landing", baseParam({ user: req.session.user, drivers, errors }));
     })
     .catch(err => {
       console.error(err);
@@ -102,6 +105,21 @@ router.post("/login", (req, res) => {
 router.post("/go", (req, res) => {
   if (!req.session.user?.id) return res.redirect("/");
   const { type, destination, pickupAt, DriverId  } = req.body
+
+  if (!type || !destination || !pickupAt || !DriverId || destination.replace(/ /g,"").length == 0 || pickupAt.replace(/ /g,"").length == 0){
+    let eQuery = '';
+    if(!type) eQuery += 'Type of Ride must be choosed,'
+    
+    if(!destination) eQuery += 'Destination must be filled,'
+    else if(destination.replace(/ /g,"").length == 0) eQuery += 'Destination cannot be empty,'
+    
+    if(!pickupAt) eQuery += 'Pickup Point must be filled,'
+    else if(pickupAt.replace(/ /g,"").length == 0) eQuery += 'Pickup Point cannot be empty,'
+    
+    if(!DriverId) eQuery += 'Driver must be choosed,'
+    
+    res.redirect(`/?errors=${eQuery}`)
+  }
   req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 });
 
   res.redirect("/ongoing");
@@ -148,7 +166,6 @@ router.post("/ongoing", (req, res) => {
   .then(info => {
     
     delete req.session.order;
-    // res.send(req.session.user)
     res.redirect(`/history?info=info`);
   })
   .catch(err => {
