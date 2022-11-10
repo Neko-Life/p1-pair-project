@@ -2,7 +2,7 @@
 <nav>
   <div>
     <a href="/">
-      <h1>Mart Go Online!</h1>
+      <h1>Go Walk Walk!</h1>
     </a>
   </div>
   <div>
@@ -30,7 +30,6 @@
       <% } else {%>
       <li>
 	<div>
-	  <img src="<%= user.profilePicture %>" ält="User Profile" height="30px">
 	  <span><%= "Username" %></span>
 	</div>
 	<!-- dropdown menu -->
@@ -39,7 +38,7 @@
 	    <a></a>
 	  </div>
 	  <div>
-	    <a href="/settings/<%= user.id %>"></a>
+	    <a href="/settings/<%= user.id %>">Settings</a>
 	  </div>
 	  <div>
 	    <a href="/logout/<%= user.id %>">Logout</a>

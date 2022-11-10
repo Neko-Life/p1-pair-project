@@ -50,5 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeCreate((instance, options) => {
+
+  });
   return User;
 };
