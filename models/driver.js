@@ -22,7 +22,15 @@ module.exports = (sequelize, DataTypes) => {
 	notNull: true,
       }
     },
-    phoneNumber: DataTypes.STRING,
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
     rank: DataTypes.STRING,
     totalPoint: DataTypes.INTEGER
   }, {
