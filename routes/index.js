@@ -58,6 +58,7 @@ router.post("/login", (req, res) => {
     if (!user || !compareSync(password, user.password)) {
       return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
     }
+    console.log(">>>>>> CORRECT PASSWORD 	<<<<<<<");
     res.redirect("/");
   })
   .catch(err => {

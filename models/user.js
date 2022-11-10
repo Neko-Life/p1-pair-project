@@ -82,10 +82,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.beforeCreate((instance, options) => {
+    console.log(instance, "<<<<<< SINGLE")
     instance.hashPassword();
   });
 
   User.beforeBulkCreate((instances, options) => {
+    console.log(instances, "<<<<<< BULK");
     instances.forEach(instance => instance.hashPassword());
   });
 
