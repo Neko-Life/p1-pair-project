@@ -22,10 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
 	notEmpty: true,
 	notNull: true,
+	match(value) {
+	  if (!value || !value.match(/^\+?\d+$/)?.length) {
+	    throw new Error("please enter a valid phone number");
+	  }
+	},
       }
     },
     address: DataTypes.STRING,
-    totalPoint: DataTypes.INTEGER,
+    totalPoint: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     bio: DataTypes.STRING,
     UserId: {
       type: DataTypes.INTEGER,

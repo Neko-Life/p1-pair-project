@@ -32,7 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     rank: DataTypes.STRING,
-    totalPoint: DataTypes.INTEGER
+    totalPoint: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   }, {
     sequelize,
     modelName: 'Driver',
