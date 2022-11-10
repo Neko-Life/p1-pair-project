@@ -15,7 +15,7 @@
 	<label for="profileName">Profile Name:</label>
       </div>
       <div>
-	<input type="text" name="profileName" placeholder="Your profile name" value="<%= profile.profileName %>">
+	<input type="text" name="profileName" placeholder="Your profile name" value="<%= user.profile.profileName %>">
       </div>
     </div>
     <div>
@@ -23,7 +23,7 @@
 	<label for="bio">Bio:</label>
       </div>
       <div>
-	<textarea name="bio" placeholder="Bio"><%= profile.bio %></textarea>
+	<textarea name="bio" placeholder="Bio"><%= user.profile.bio %></textarea>
       </div>
     </div>
     <div>
@@ -31,7 +31,7 @@
 	<label for="address">Address:</label>
       </div>
       <div>
-	<input type="text" name="address" placeholder="Your Address" value="<%= profile.address %>">
+	<input type="text" name="address" placeholder="Your Address" value="<%= user.profile.address %>">
       </div>
     </div>
     <div>
@@ -55,7 +55,7 @@
 	<label for="phoneNumber">New Phone Number:</label>
       </div>
       <div>
-	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= profile.phoneNumber %>">
+	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= user.profile.phoneNumber %>">
       </div>
     </div>
     <div>
@@ -76,10 +76,10 @@
     </div>
     <div>
       <div>
-	<label for="oldPassword">Old password:</label>
+	<label for="oldPassword">Old password (required to update password):</label>
       </div>
       <div>
-	<input type="password" name="oldPassword" placeholder="Your old password (required if you want to update password)" value="">
+	<input type="password" name="oldPassword" placeholder="Your old password" value="">
       </div>
     </div>
     <input type="submit" value="Update Profile">

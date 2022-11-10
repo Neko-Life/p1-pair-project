@@ -6,6 +6,11 @@ const baseParam = (paramObject = {}) => {
     if (!Array.isArray(paramObject.errors)) paramObject.errors = [paramObject.errors];
     paramObject.errors = paramObject.errors.map(el => el.message || el);
   }
+
+  if (!paramObject.user?.profile) {
+    if (!paramObject.user) paramObject.user = {};
+    paramObject.user.profile = null;
+  }
   return {
     user: null,
     errors: [],

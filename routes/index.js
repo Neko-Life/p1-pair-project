@@ -26,6 +26,7 @@ router.get("/", (req, res) => {
   if (req.session.user) {
     Driver.findAll()
     .then(drivers => {
+      console.log(req.session.user)
       res.render("landing", baseParam({ user: req.session.user, drivers }));
     })
     .catch(err => {
@@ -161,10 +162,63 @@ router.get("/settings", (req, res) => {
     return res.redirect("/ongoing");
   }
 
+  if (!req.session.user.profile) {
+    Profile.findOne()
+    .then(profile => {
+      req.session.user.profile = profile;
+      res.render("settings", baseParam({ user: req.session.user }));
+    })
+    .catch(err => {
+      console.error(err);
+      res.render("settings", baseParam({ errors: err }));
+    });
+  } else {
+      res.render("settings", baseParam({ user: req.session.user }));
+  }
 });
 
 router.post("/settings", (req, res) => {
+  console.log(req.body);
+  if (req.body.password?.length && !User.validPassword(req.body)) {
+    return res.render("settings", { user: req.session.user, errors: ["Please fill the password correctly!"] });
+  }
 
+  const {
+    profileName, bio, address, username, email, phoneNumber, password, oldPassword
+  } = req.body;
+
+  const userOptions = { username, email, };
+
+  if (password?.length) {
+    if (! oldPassword?.length || !compareSync(oldPassword, req.session.user.password)) {
+      return res.render("settings", { user: req.session.user, errors: ["Invalid old password!"] });
+    }
+
+    userOptions.password = password;
+  }
+
+  let tempNewUser;
+  User.update(userOptions, { where: { id: req.session.user.id } })
+  .then(user => {
+    tempNewUser = user;
+    return Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.profile.id } });
+  })
+  .then(profile => {
+    tempNewUser.profile = profile;
+    req.session.user = tempNewUser;
+    res.redirect("/");
+  })
+  .catch(err => {
+    console.error(err);
+    
+    // User.destroy({
+    //   where: {
+    //     email: email,
+    //   }
+    // }).catch(console.error);
+
+    return res.render("settings", baseParam({ user: req.session.user, errors: err }));
+  });
 });
 
 router.get("/logout", (req, res) => {
