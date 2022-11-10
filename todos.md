@@ -31,4 +31,6 @@ DONE: sort history harusnya filter q
 DONE: muncul rank di driver select q
 
 DONE: VALIDATE order type -> validation & index/controller validation
-Role User yang muncul & TotalPoint yg muncul akan terpanggil setiap kali ke landing page & setting page (refreshable)
+DONE: VALIDATE Rank & Role
+
+??? Role User yang muncul & TotalPoint yg muncul akan terpanggil setiap kali ke landing page & setting page (refreshable)

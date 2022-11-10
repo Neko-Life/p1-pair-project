@@ -35,6 +35,13 @@ module.exports = (sequelize, DataTypes) => {
     rank: {
       type: DataTypes.STRING,
       defaultValue: "Beginner",
+      validate: {
+        isRegistered(value){
+          if (value !== 'Beginner' && value !== 'Rookie' && value !== 'Apprentice' && value !== 'Professional') {
+            throw new Error('Driver Rank value is not right!');
+          }
+        }
+      }
     },
     totalPoint: {
       type: DataTypes.INTEGER,

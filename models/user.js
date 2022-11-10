@@ -73,6 +73,13 @@ module.exports = (sequelize, DataTypes) => {
     role:  {
       type: DataTypes.STRING,
       defaultValue: "Regular",
+      validate: {
+        isRight(value){
+          if (value !== 'Bronze' && value !== 'Silver' && value !== 'Gold' && value !== 'Platinum') {
+            throw new Error('User Role value is wrong!');
+          }
+        }
+      }
     },
   }, {
     sequelize,
