@@ -1,4 +1,7 @@
 <h1>Login</h1>
+<% for (const data of errors) { %>
+  <p><%= data %></p>
+<% } %>
 <form action="/login" method="POST">
   <div>
     <div>

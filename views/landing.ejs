@@ -7,9 +7,9 @@
 
 <section>
   <% if (user) { %>
-    <%- include("partials/order") %>
+    <%- include("partials/order", { errors, user }) %>
   <% } else { %>
-    <%- include("partials/login") %>
+    <%- include("partials/login", { errors, user } ) %>
    <% } %>
 </section>
 </body>

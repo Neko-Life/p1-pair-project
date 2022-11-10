@@ -3,6 +3,7 @@
 const baseParam = (paramObject = {}) => {
   return {
     user: null,
+    errors: [],
     ...paramObject
   }
 }

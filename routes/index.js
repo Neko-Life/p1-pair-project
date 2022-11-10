@@ -30,22 +30,38 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", (req, res) => {
   if (!User.validPassword(req.body)) {
-    return req.redirect(`/signup?errors=Password doesn't match!`);
+    return res.render("signup", { errors: ["Please fill the password correctly!"] });
   }
-  const { username, email, phoneNumber, password, repeatPassword } = req.body;
+  const { username, email, phoneNumber, password } = req.body;
 
-  User.create({  })
+  User.create({ username, email, phoneNumber, password })
   .then(() => {
     res.redirect("/");
   })
   .catch(err => {
     console.error(err);
-    req.redirect(`/signup?errors=${err.message}!`);
+    return res.render("signup", baseParam({ errors: err }));
   });
 });
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
+
+  User.findOne({
+    where: {
+      email: email
+    }
+  })
+  .then(user => {
+    if (!user) {
+      return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
+    }
+    res.redirect("/");
+  })
+  .catch(err => {
+    console.error(err);
+    res.render("landing", baseParam({ errors: err }));
+  });
 });
 
 router.get("/settings/:userId", (req, res) => {});
