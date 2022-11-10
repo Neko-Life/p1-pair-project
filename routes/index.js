@@ -99,8 +99,6 @@ router.post("/go", (req, res) => {
   req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 });
 
   res.redirect("/ongoing");
-
-  // res.send("DO SOME STUFF AND GO TO /ongoing");
 });
 
 router.get("/ongoing", (req, res) => {
@@ -135,7 +133,8 @@ router.post("/ongoing", (req, res) => {
   .then(info => {
     
     delete req.session.order;
-    res.send(`Message sent to: ${info.accepted[0]}`);
+    // res.send(req.session.user)
+    res.redirect(`/history?info=info`);
   })
   .catch(err => {
     console.error(err);
@@ -144,11 +143,11 @@ router.post("/ongoing", (req, res) => {
 })
 
 router.get('/history', (req, res) => {
-  if (req.session.order) {
-    return res.redirect("/ongoing");
-  }
-  let { DriverId, UserId, point, search } = req.query
-  let options = { include: { all: true }, where: { UserId } }
+  if (!req.session.user) return res.redirect("/")
+  if (req.session.order) return res.redirect("/ongoing");
+
+  let { info, DriverId, point, search } = req.query
+  let options = { include: Driver, where: { UserId: req.session.user.id } }
 
   if (point) options.where.satisfactionPoint = {[Op.eq]: point}
   if (DriverId) options.where.DriverId = DriverId
@@ -157,9 +156,15 @@ router.get('/history', (req, res) => {
     options.where.pickupAt = { [Op.iLike]: `%${search}%` }
   }
   
-  Order.findAll(options)
+  let drivers;
+
+  Driver.findAll()
+  .then(result => {
+    drivers = result
+    return Order.findAll(options)
+  })
   .then(orders => {
-    res.render('history', { orders, user: req.session.user } )
+    res.render('history', { orders, user: req.session.user, info, drivers } )
   })
   .catch(err => {
     console.error(err);

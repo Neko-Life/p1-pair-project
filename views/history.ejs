@@ -4,32 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        table, th, td {border: 1px solid black;}
+        .checked {
+            color: orange;
+        }
+    </style>
     <title>Orders History</title>
 </head>
 <body>
     <%- include("partials/navbar.ejs", { user }) %>
+    <form action="/history" method="get">
+      <input type="text" id="search" name="search" placeholder="Search Destination Name">
+    </form>
+    
+    <form action="/history" method="get">
+      <select name="DriverId" id="DriverId">
+        <option value="">Sort by Driver</option>
+        <% drivers.forEach((el, i) => { %>
+          <option value="<%= el.id %>"><%= el.name %></option>
+        <% }) %>
+      </select>
+      <select name="point" id="point">
+        <option value="">Sort by Rating </option>
+        <option value="0">Not Rated <span class="fa fa-star checked"></span></option>
+        <option value="1">1 Star </option>
+        <option value="2">2 Stars </option>
+        <option value="3">3 Stars </option>
+        <option value="4">4 Stars </option>
+        <option value="5">5 Stars </option>
+      </select>
+      <input type="submit" value="Sort" />
+    </form><br>
+
+    <% if (info) { %>
+      <h2>Invoice Already Sent</h2>
+    <% } else {%>
+      <br><br>
+    <% } %>
+
     <table>
         <tr>
-          <th>Order Id</th>
-          <th>User Name</th>
-          <th>User Pickup</th>
-          <th>User Destination</th>
+          <th>No</th>
           <th>Driver Name</th>
+          <th>Order Id</th>
+          <th>Pickup</th>
+          <th>Destination</th>
+          <th>Rating</th>
         </tr>
+        <% orders.forEach((el, i) => { %>
         <tr>
-          <td>1</td>
-          <td>Qomqom</td>
-          <td>Mojokerto</td>
-          <td>Jakarta</td>
-          <td>Buroq</td>
+          <td><%= ++i %></td>
+          <td><%= el.Driver.dataValues.name %></td>
+          <td><%= el.id %></td>
+          <td><%= el.pickupAt %></td>
+          <td><%= el.destination %></td>
+          <% if (el.satisfactionPoint == 0) { %>
+            <td>Not Rated</td>
+          <% } else { %>
+            <td><%= el.satisfactionPoint %><span class="fa fa-star checked"></span></td>
+          <% } %>
         </tr>
-        <tr>
-            <td>2</td>
-            <td>Marq</td>
-            <td>Mojokerto</td>
-            <td>Surga</td>
-            <td>Pahala</td>
-        </tr>
+        <% }) %>
       </table> 
 </body>
 </html>
