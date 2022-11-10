@@ -53,6 +53,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
 	notEmpty: true,
 	notNull: true,
+	minLength(value) {
+	  if (!value || value.length < 6) {
+	    throw new Error("password must be minimum 6 in length");
+	  }
+	},
       }
     },
     role:  {

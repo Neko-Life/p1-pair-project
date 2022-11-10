@@ -25,10 +25,23 @@ router.get("/", (req, res) => {
 
 router.get("/reviews", (req, res) => {});
 router.get("/signup", (req, res) => {
-  res.render("signup");
+  res.render("signup", { errors: req.query.errors });
 });
 
 router.post("/signup", (req, res) => {
+  if (!User.validPassword(req.body)) {
+    return req.redirect(`/signup?errors=Password doesn't match!`);
+  }
+  const { username, email, phoneNumber, password, repeatPassword } = req.body;
+
+  User.create({  })
+  .then(() => {
+    res.redirect("/");
+  })
+  .catch(err => {
+    console.error(err);
+    req.redirect(`/signup?errors=${err.message}!`);
+  });
 });
 
 router.post("/login", (req, res) => {
