@@ -5,15 +5,15 @@ const { Router } = require("express");
 const router = Router();
 
 //////
-const { User, Driver, Order, Profile } = require("../models");
+const { User, Driver, Order, Profile, sequelize } = require("../models");
 const { baseParam } = require("../helper/util");
 const { compareSync } = require("bcryptjs");
 
-/**
- * @type {Map<????, User>}
- */
-const loggedIn = new Map();
-
+sequelize.sync({ alter: true })
+  .then(() => {
+    console.log("Database synced successfully");
+  })
+  .catch(err => console.error(err, "<<<<<< SYNC ERROR") );
 //////
 
 router.get("/", (req, res) => {
@@ -53,7 +53,6 @@ router.post("/signup", (req, res) => {
   const { username, email, phoneNumber, password } = req.body;
 
   User.create({ username, email, password })
-  .then(() => User.findOne({ where: { email: email } }))
   .then(user => Profile.create({ phoneNumber, UserId: user.id }))
   .then(() => {
     res.redirect("/");
