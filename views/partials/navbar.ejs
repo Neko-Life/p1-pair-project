@@ -10,7 +10,7 @@
     <% if (user?.id) { %>
       <li>
 	<div>
-	  <span id="username" class="has-dropdown"><%= user.username %></span>
+	  <span id="username" class="has-dropdown"><%= user.profile?.profileName || user.username %> - <%= user.role %></span>
 	</div>
 	<!-- dropdown menu -->
 	<div id="dropdown-username" class="dropdown-menu hidden absolute">

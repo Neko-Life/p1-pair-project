@@ -56,7 +56,7 @@
         <% orders.forEach((el, i) => { %>
         <tr>
           <td><%= ++i %></td>
-          <td><%= el.Driver.dataValues.name %></td>
+          <td><%= el.Driver.dataValues.rank %> - <%= el.Driver.dataValues.name %></td>
           <td><%= el.id %></td>
           <td><%= el.pickupAt %></td>
           <td><%= el.destination %></td>

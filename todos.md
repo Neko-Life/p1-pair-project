@@ -20,10 +20,10 @@ validation role, rank, order type, in database etc
 
 
 
-test formattedPhoneNumber f
+DONE: test formattedPhoneNumber f
 add delete account f
 hooks user role f
-muncul rank di dropdown f
+DONE: muncul rank di dropdown f
 
 mengecek tampilan validasi q
 hooks driver rank

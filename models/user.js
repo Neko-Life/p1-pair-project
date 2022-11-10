@@ -89,5 +89,14 @@ module.exports = (sequelize, DataTypes) => {
     instances.forEach(instance => instance.hashPassword());
   });
 
+  User.beforeUpdate((instance, options) => {
+    console.log(instance, "<<<<<< SINGLE")
+    instance.hashPassword();
+  });
+
+  User.beforeUpdate((instances, options) => {
+    console.log(instances, "<<<<<< BULK");
+    instances.forEach(instance => instance.hashPassword());
+  });
   return User;
 };

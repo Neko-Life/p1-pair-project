@@ -29,8 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 	notEmpty: true,
 	notNull: true,
 	match(value) {
-	  value = !value?.length ? "" : value.replace(/[\s-\_]*/g, "");
-	  if (!value || !value.match(/^\+?\d+$/)?.length) {
+	  if (!value || !value.replace(/[\s-\_]*/g, "").match(/^\+?\d+$/)?.length) {
 	    throw new Error("please enter a valid phone number");
 	  }
 	},
@@ -53,6 +52,26 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Profile',
+  });
+
+  Profile.beforeCreate((instance, options) => {
+    instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
+  });
+
+  Profile.beforeBulkCreate((instances, options) => {
+    instances.forEach(instance => {
+      instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
+    });
+  });
+
+  Profile.beforeUpdate((instance, options) => {
+    instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
+  });
+
+  Profile.beforeBulkUpdate((instances, options) => {
+    instances.forEach(instance => {
+      instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
+    });
   });
   return Profile;
 };

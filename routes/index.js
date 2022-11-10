@@ -1,8 +1,7 @@
 "use strict";
 
 const { Router } = require("express");
-const invoicer = require('../helper/invoicer')
-const { automailer, mailDetails } = require('../helper/automailer')
+
 const router = Router();
 
 //////
@@ -10,6 +9,8 @@ const { User, Driver, Order, Profile, sequelize } = require("../models");
 const { baseParam } = require("../helper/util");
 const { compareSync } = require("bcryptjs");
 const { Op } = require("sequelize");
+const invoicer = require('../helper/invoicer')
+const { automailer, mailDetails } = require('../helper/automailer')
 
 sequelize.sync({ alter: true })
   .then(() => {
@@ -77,6 +78,9 @@ router.post("/login", (req, res) => {
   User.findOne({
     where: {
       email: email
+    },
+    include: {
+      model: Profile,
     }
   })
   .then(user => {
@@ -85,6 +89,7 @@ router.post("/login", (req, res) => {
       return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
     }
     console.log(">>>>>> CORRECT PASSWORD <<<<<<<");
+    user.profile = user.Profile;
     req.session.user = user;
     res.redirect("/");
   })
@@ -148,7 +153,7 @@ router.post("/ongoing", (req, res) => {
   })
   .catch(err => {
     console.error(err);
-    res.send(err)
+    res.send(err.message)
   })
 })
 
@@ -178,7 +183,7 @@ router.get('/history', (req, res) => {
   })
   .catch(err => {
     console.error(err);
-    res.send(err)
+    res.send(err.message)
   })
 })
 
@@ -232,7 +237,7 @@ router.post("/settings", (req, res) => {
   })
   .then(profile => {
     tempNewUser.profile = profile;
-    // req.session.user = tempNewUser;
+    req.session.user = tempNewUser;
     res.redirect("/");
   })
   .catch(err => {
