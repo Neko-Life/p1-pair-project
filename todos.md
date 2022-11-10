@@ -32,5 +32,6 @@ DONE: muncul rank di driver select q
 
 DONE: VALIDATE order type -> validation & index/controller validation
 DONE: VALIDATE Rank & Role
+DONE: Delete/Clear Order History
 
 ??? Role User yang muncul & TotalPoint yg muncul akan terpanggil setiap kali ke landing page & setting page (refreshable)

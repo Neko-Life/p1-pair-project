@@ -219,6 +219,16 @@ router.get('/history', (req, res) => {
   })
 })
 
+router.get("/history/clear", (req, res) => {
+  Order.destroy({where: {UserId:req.session.user.id}})
+  .then(_ => {
+    res.redirect("/history")
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
 router.get("/settings", (req, res) => {
   if (!req.session.user?.id) return res.redirect("/");
   if (req.session.order) {
