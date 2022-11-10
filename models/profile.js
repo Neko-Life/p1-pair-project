@@ -12,6 +12,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    get formattedPhoneNumber() {
+      const arr = this.phoneNumber.split("").reverse();
+      const newArr = [];
+
+      let temp = "";
+      for (const num of arr) {
+	if (newArr.length && newArr.length % 4 === 0) {
+	  newArr.push(temp);
+	  temp = "";
+	}
+	temp += num;
+      }
+      if (temp.length) newArr.push(temp);
+
+      return newArr.map(el => el.split("").reverse().join("")).reverse().join("-");
+    }
   }
   Profile.init({
     profileName: DataTypes.STRING,
