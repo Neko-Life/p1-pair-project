@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+<head></head>
+<body>
+<%- include("partials/navbar", { user }) %>
+
+<section>
+  <div>
+    <h1>Settings</h1>
+  </div>
+  <form action="/settings/<%= user.id %>" method="POST">
+    <div>
+      <div>
+	<label for="name">Name:</label>
+      </div>
+      <div>
+	<input type="text" name="name">
+      </div>
+    </div>
+
+    <div>
+      <div>
+	<label for="profilePicture">Profile Picture:</label>
+      </div>
+      <div>
+	<input type="text" name="profilePicture">
+      </div>
+    </div>
+
+    <div>
+      <input type="submit" value="Save">
+    </div>
+  </form>
+</section>
+</body>
+</html>

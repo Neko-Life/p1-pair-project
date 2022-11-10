@@ -4,8 +4,29 @@ const { Router } = require("express");
 
 const router = Router();
 
+//////
+const { User, Shop, Review, Transaction, Driver } = require("../models");
+const { baseParam } = require("../helper/util");
+
+/**
+ * @type {Map<????, User>}
+ */
+const loggedIn = new Map();
+
+//////
+
 router.get("/", (req, res) => {
-  res.render("landing");
+  if (req.smtsmt) {
+
+  } else {
+    res.render("landing" , baseParam());
+  }
 });
+
+router.get("/reviews", (req, res) => {});
+router.get("/signup", (req, res) => {});
+router.get("/login", (req, res) => {});
+router.get("/settings/:userId", (req, res) => {});
+router.get("/logut/:userId", (req, res) => {});
 
 module.exports = router;
