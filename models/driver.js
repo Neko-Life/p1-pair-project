@@ -14,7 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Driver.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
     phoneNumber: DataTypes.STRING,
     rank: DataTypes.STRING,
     totalPoint: DataTypes.INTEGER

@@ -14,11 +14,46 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Order.init({
-    type: DataTypes.STRING,
-    destination: DataTypes.STRING,
-    pickupAt: DataTypes.STRING,
-    DriverId: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER,
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
+    destination: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
+    pickupAt: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
+    DriverId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+	notEmpty: true,
+	notNull: true,
+      }
+    },
     satisfactionPoint: DataTypes.INTEGER
   }, {
     sequelize,
