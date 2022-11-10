@@ -12,10 +12,34 @@
   <form action="/settings" method="POST">
     <div>
       <div>
+	<label for="profileName">Profile Name:</label>
+      </div>
+      <div>
+	<input type="text" name="profileName" placeholder="Your profile name" value="<%= profile.profileName %>">
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="bio">Bio:</label>
+      </div>
+      <div>
+	<textarea name="bio" placeholder="Bio"><%= profile.bio %></textarea>
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="address">Address:</label>
+      </div>
+      <div>
+	<input type="text" name="address" placeholder="Your Address" value="<%= profile.address %>">
+      </div>
+    </div>
+    <div>
+      <div>
 	<label for="username">Username:</label>
       </div>
       <div>
-	<input type="text" name="username" placeholder="Username">
+	<input type="text" name="username" placeholder="Username" value="<%= user.username %>">
       </div>
     </div>
     <div>
@@ -23,31 +47,39 @@
 	<label for="email">Email:</label>
       </div>
       <div>
-	<input type="text" name="email" placeholder="Email">
+	<input type="text" name="email" placeholder="Email" value="<%= user.email %>">
       </div>
     </div>
     <div>
       <div>
-	<label for="phoneNumber">Phone Number:</label>
+	<label for="phoneNumber">New Phone Number:</label>
       </div>
       <div>
-	<input type="text" name="phoneNumber" placeholder="Phone Number">
-      </div>
-    </div>
-    <div>
-      <div>
-	<label for="password">Password</label>
-      </div>
-      <div>
-	<input type="password" name="password" placeholder="Password">
+	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= profile.phoneNumber %>">
       </div>
     </div>
     <div>
       <div>
-	<label for="repeatPassword">Repeat your password:</label>
+	<label for="password">New password:</label>
       </div>
       <div>
-	<input type="password" name="repeatPassword" placeholder="Repeat your password">
+	<input type="password" name="password" placeholder="Password" value="">
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="repeatPassword">Repeat new password:</label>
+      </div>
+      <div>
+	<input type="password" name="repeatPassword" placeholder="Repeat your new password" value="">
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="oldPassword">Old password:</label>
+      </div>
+      <div>
+	<input type="password" name="oldPassword" placeholder="Your old password (required if you want to update password)" value="">
       </div>
     </div>
     <input type="submit" value="Update Profile">
