@@ -6,7 +6,7 @@ const formatPhoneNumber = (num) => {
 
       let temp = "";
       for (const num of arr) {
-	if (newArr.length && newArr.length % 4 === 0) {
+	if (temp.length && temp.length % 4 === 0) {
 	  newArr.push(temp);
 	  console.log(newArr);
 	  temp = "";
