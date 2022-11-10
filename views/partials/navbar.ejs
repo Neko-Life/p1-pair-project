@@ -16,18 +16,7 @@
   </div>
   <div>
     <ul>
-    <% if (!user?.id) { %>
-      <li>
-	<a href="/signup">
-	  Sign Up
-	</a>
-      </li>
-      <li>
-	<a href="/login">
-	  Login
-	</a>
-      </li>
-      <% } else {%>
+    <% if (user) { %>
       <li>
 	<div>
 	  <span><%= "Username" %></span>

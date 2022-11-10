@@ -1,0 +1,32 @@
+  <form action="/go/<%= user.id %>" method="POST">
+    <div>
+      <div>
+	<label for="destination">Where do you wanna go today?</label>
+      </div>
+      <div>
+	<input type="text" name="destination">
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="pickupAt">Where you want us to pick you up?</label>
+      </div>
+      <div>
+	<input type="text" name="pickupAt">
+      </div>
+    </div>
+    <div>
+      <div>
+	<label for="DriverId">Select a Driver:</label>
+      </div>
+      <div>
+	<select name="DriverId">
+	  <option value="" disabled selected>Select a Driver</option>
+	  <% for (const data of drivers) { %>
+	    <option value="<%= data.id %>" ><%= data.id %></option>
+	  <% } %>
+	</select>
+      </div>
+    </div>
+    <input type="submit" value="Go">
+  </form>

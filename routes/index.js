@@ -25,7 +25,7 @@ router.get("/", (req, res) => {
 
 router.get("/reviews", (req, res) => {});
 router.get("/signup", (req, res) => {});
-router.get("/login", (req, res) => {});
+router.post("/login", (req, res) => {});
 router.get("/settings/:userId", (req, res) => {});
 router.get("/logout/:userId", (req, res) => {});
 
