@@ -14,12 +14,12 @@
 </head>
 <body>
     <% let displayTime = Math.ceil(Math.random() * 100) %>
-    <% if (end ) {%>
+    <% if (end) {%>
         <h2>Perkiraan Waktu Tiba</h2>
         <h2><%= `00:00` %></h2>
         <h3>Sudah Sampaiii!</h3>
         <p>Berikan Rate Untuk Pengalaman Perjalananmu:</p>
-      <form action="/" method="get">
+      <form action="/history" method="post">
         <label>
             <input type="radio" name="rate" value="1"/>1 <span class="fa fa-star checked"></span>
         </label>
