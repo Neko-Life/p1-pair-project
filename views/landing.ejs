@@ -6,7 +6,7 @@
 <%- include("partials/navbar", { user }) %>
 
 <section>
-  <form action="/go/<%= user.id %>" method="POST">
+  <form action="<%= user ? "/go/" + user.id : "/login" %>" method="<%= user ? "POST" : "GET" %>">
     <div>
       <div>
 	<label for="destination">Where do you wanna go today?</label>
