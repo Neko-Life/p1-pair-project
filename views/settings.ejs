@@ -9,6 +9,9 @@
   <div>
     <h1>Profile</h1>
   </div>
+  <% for (const data of errors) { %>
+    <h3><%= data %></h3>
+  <% } %>
   <form action="/settings" method="POST">
     <div>
       <div>

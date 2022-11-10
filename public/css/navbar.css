@@ -1,0 +1,28 @@
+.hidden {
+  display: none;
+}
+
+.absolute {
+  position: absolute;
+}
+
+span.has-dropdown {
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+span.has-dropdown:hover {
+  transition: .2s;
+  background-color: lightgray;
+}
+
+span.active {
+  background-color: lightgray;
+}
+
+.dropdown-menu {
+  background-color: lightgray;
+  padding: 20px;
+  border-radius: 6px;
+}

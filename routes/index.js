@@ -190,7 +190,7 @@ router.get("/settings", (req, res) => {
 router.post("/settings", (req, res) => {
   console.log(req.body);
   if (req.body.password?.length && !User.validPassword(req.body)) {
-    return res.render("settings", { user: req.session.user, errors: ["Please fill the password correctly!"] });
+    return res.render("settings", baseParam({ user: req.session.user, errors: ["Please fill the password correctly!"] }));
   }
 
   const {
@@ -200,8 +200,8 @@ router.post("/settings", (req, res) => {
   const userOptions = { username, email, };
 
   if (password?.length) {
-    if (! oldPassword?.length || !compareSync(oldPassword, req.session.user.password)) {
-      return res.render("settings", { user: req.session.user, errors: ["Invalid old password!"] });
+    if (!oldPassword?.length || !compareSync(oldPassword, req.session.user.password)) {
+      return res.render("settings", baseParam({ user: req.session.user, errors: ["Invalid old password!"] }));
     }
 
     userOptions.password = password;

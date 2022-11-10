@@ -10,10 +10,10 @@
     <% if (user?.id) { %>
       <li>
 	<div>
-	  <span><%= user.username %></span>
+	  <span id="username" class="has-dropdown"><%= user.username %></span>
 	</div>
 	<!-- dropdown menu -->
-	<div class="hidden absolute">
+	<div id="dropdown-username" class="dropdown-menu hidden absolute">
 	  <div>
 	    <a href="/settings">Profile</a>
 	  </div>
@@ -38,3 +38,4 @@
     </ul>
   </div>
 </nav>
+<script type="text/javascript" src="/script/navbar.js"></script>
