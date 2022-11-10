@@ -8,3 +8,6 @@ hook afterIncrement User, use review point to decide Driver's point incrementing
 
 todos page: landing, register, signup, ongoing, settings, history, pop up review
 todos partials: form order, form login
+
+learn and use bcrypt password hook
+learn and use sessions
