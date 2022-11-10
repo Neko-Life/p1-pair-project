@@ -5,7 +5,7 @@ const { Router } = require("express");
 const router = Router();
 
 //////
-const { User, Shop, Review, Transaction, Driver } = require("../models");
+const { User, Driver, Order, Profile } = require("../models");
 const { baseParam } = require("../helper/util");
 
 /**
