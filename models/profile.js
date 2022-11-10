@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
 	notEmpty: true,
 	notNull: true,
 	match(value) {
-	  if (!value || !value.replace(/[\s-\_]*/g, "").match(/^\+?\d+$/)?.length) {
+	  value = !value?.length ? "" : value.replace(/[\s-\_]*/g, "");
+	  if (!value || !value.match(/^\+?\d+$/)?.length) {
 	    throw new Error("please enter a valid phone number");
 	  }
 	},
