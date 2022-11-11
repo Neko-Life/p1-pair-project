@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasOne(models.Profile);
+      User.hasOne(models.Profile, {
+	onDelete: "CASCADE",
+      });
       User.hasMany(models.Order);
     }
 
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     hashPassword() {
-      if (!this.hashed) {
+      if (!this.hashed && this.password?.length) {
 	const salt = genSaltSync(13);
 	this.password = hashSync(this.password, salt);
 	this.hashed = true;
@@ -75,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "Regular",
       validate: {
         isRight(value){
-          if (value !== 'Bronze' && value !== 'Silver' && value !== 'Gold' && value !== 'Platinum') {
+          if (value !== 'Regular' && value !== 'Bronze' && value !== 'Silver' && value !== 'Gold' && value !== 'Platinum') {
             throw new Error('User Role value is wrong!');
           }
         }
@@ -93,17 +95,30 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeBulkCreate((instances, options) => {
     console.log(instances, "<<<<<< BULK");
-    instances.forEach(instance => instance.hashPassword());
+    if (Array.isArray(instances)) instances.forEach(instance => instance.hashPassword());
+    else instances.hashPassword();
   });
 
   User.beforeUpdate((instance, options) => {
     console.log(instance, "<<<<<< SINGLE")
-    instance.hashPassword();
+    instance.attributes = User.build(instance.attributes);
+    instance.attributes.hashPassword();
   });
 
-  User.beforeUpdate((instances, options) => {
+  User.beforeBulkUpdate((instances, options) => {
     console.log(instances, "<<<<<< BULK");
-    instances.forEach(instance => instance.hashPassword());
+    if (Array.isArray(instances)) instances.forEach(instance => {
+	instance.attributes = User.build(instance.attributes);
+	instance.attributes.hashPassword();
+      });
+    else {
+      instances.attributes = User.build(instances.attributes);
+      instances.attributes.hashPassword();
+    }
+  });
+
+  User.beforeDestroy((instances, options) => {
+    console.log(instances, "<<<<<<<< BEFORE DESTROY")
   });
   return User;
 };

@@ -9,6 +9,7 @@
   <div>
     <h1><%= user.profile?.profileName || user.username %>'s Profile</h1>
     <h1><%= user.role %></h1>
+    <h1>Your current point:<%= user.profile.totalPoint %></h1>
   </div>
   <% for (const data of errors) { %>
     <h3><%= data %></h3>
@@ -89,5 +90,6 @@
     <input type="submit" value="Update Profile">
   </form>
 </section>
+<a href="/delete-account">Delete Account</a>
 </body>
 </html>

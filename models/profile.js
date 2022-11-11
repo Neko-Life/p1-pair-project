@@ -59,19 +59,24 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Profile.beforeBulkCreate((instances, options) => {
-    instances.forEach(instance => {
+    if (Array.isArray(instances)) instances.forEach(instance => {
       instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
     });
+    else instances.phoneNumber = instances.phoneNumber.replace(/[\s-\_]*/g, "");
   });
 
   Profile.beforeUpdate((instance, options) => {
-    instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
+    instance.attributes.phoneNumber = instance.attributes.phoneNumber.replace(/[\s-\_]*/g, "");
   });
 
   Profile.beforeBulkUpdate((instances, options) => {
-    instances.forEach(instance => {
-      instance.phoneNumber = instance.phoneNumber.replace(/[\s-\_]*/g, "");
+    if (Array.isArray(instances)) instances.forEach(instance => {
+      instance.attributes.phoneNumber = instance.attributes.phoneNumber.replace(/[\s-\_]*/g, "");
     });
+    else {
+      console.log(instances, "<<<<<<<<<<<< PROFILE")
+      instances.attributes.phoneNumber = instances.attributes.phoneNumber.replace(/[\s-\_]*/g, "");
+    }
   });
 
   // Profile.afterUpdate((instance, options) => {

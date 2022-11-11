@@ -29,6 +29,7 @@ class Controller {
         let { errors } = req.query
 
         if (req.session.user) {
+	    console.log(req.session.user, "<<<<<<<<<<<<<< SESSION USER")
             Profile.findByPk(req.session.user.id)
                 .then(profile => {
                     if (profile.totalPoint >= 100) {
@@ -276,15 +277,11 @@ class Controller {
             userOptions.password = password;
         }
 
-        let tempNewUser;
         User.update(userOptions, { where: { id: req.session.user.id } })
-            .then(user => {
-                tempNewUser = user;
-                return Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.user.id } });
-            })
+            .then(() => Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.user.id } }))
             .then(profile => {
-                tempNewUser.profile = profile;
-                req.session.user = tempNewUser;
+		delete req.session.user;
+                delete req.session.order;
                 res.redirect("/");
             })
             .catch(err => {
@@ -325,6 +322,28 @@ class Controller {
                 console.log(err);
                 res.send(err)
             })
+    }
+
+    static deleteAccount(req, res) {
+      if (!req.session.user?.id) return res.redirect("/");
+
+      Profile.destroy({ where: { UserId: req.session.user.id }})
+      .then(() => {
+	return User.destroy({
+	  where: {
+	    id: req.session.user.id,
+	  }
+	})
+      })
+      .then(_ => {
+	  delete req.session.user;
+	  delete req.session.order;
+	  res.redirect('/')
+      })
+      .catch(err => {
+	  console.log(err);
+	  res.render("landing", baseParam({ errors: err }))
+      })
     }
 }
 
