@@ -1,18 +1,7 @@
 "use strict";
 
 const { Router } = require("express");
-
 const router = Router();
-
-//////
-sequelize.sync({ alter: true })
-  .then(() => {
-    console.log("==================================");
-    console.log("// Database synced successfully //");
-    console.log("==================================");
-  })
-  .catch(err => console.error(err, "<<<<<< SYNC ERROR") );
-//////
 
 const { User, Driver, Order, Profile, sequelize } = require("../models");
 const { baseParam } = require("../helper/util");
@@ -20,6 +9,16 @@ const { compareSync } = require("bcryptjs");
 const { Op } = require("sequelize");
 const invoicer = require('../helper/invoicer')
 const { automailer, mailDetails } = require('../helper/automailer')
+
+//////
+sequelize.sync({ alter: true })
+    .then(() => {
+        console.log("==================================");
+        console.log("// Database synced successfully //");
+        console.log("==================================");
+    })
+    .catch(err => console.error(err, "<<<<<< SYNC ERROR"));
+//////
 
 class Controller {
     static showHome(req, res) {
@@ -310,7 +309,23 @@ class Controller {
         res.redirect("/");
     }
 
+    static demo(req, res) {
+        let { point } = req.params
+        let profiles;
 
+        Profile.findByPk(req.session.user.id)
+            .then(result => {
+                profiles = result
+                return Profile.increment({ totalPoint: point }, { where: { UserId: req.session.user.id } })
+            })
+            .then(_ => {
+                res.redirect('/?done')
+            })
+            .catch(err => {
+                console.log(err);
+                res.send(err)
+            })
+    }
 }
 
 module.exports = Controller;

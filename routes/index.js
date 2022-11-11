@@ -1,9 +1,6 @@
 "use strict";
 
-const { Router } = require("express");
-
-const router = Router();
-
+const router = require("express").Router();
 const Controller = require("../controllers")
 
 router.get("/", Controller.showHome)
@@ -18,23 +15,7 @@ router.get("/history/clear", Controller.clearHistory)
 router.get("/settings", Controller.showSettings);
 router.post("/settings", Controller.applySettings);
 router.get("/logout", Controller.logOut);
-///testing
-router.get("/testingProfiles/:point", (req, res) => {
-  let { point } = req.params
-  let profiles;
-  
-  Profile.findByPk(req.session.user.id)
-  .then( result => {
-    profiles = result
-    return Profile.increment({totalPoint:point}, {where: {UserId:req.session.user.id}})
-  })
-  .then(_ => {
-    res.redirect('/?done')
-  })
-  .catch(err => {
-    console.log(err);
-    res.send(err)
-  })
-})
+
+router.get("/testingProfiles/:point", Controller.demo);
 
 module.exports = router
