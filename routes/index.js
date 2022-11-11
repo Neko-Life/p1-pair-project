@@ -32,16 +32,7 @@ router.get('/history', Controller.showHistory)
 router.get("/history/clear", Controller.clearHistory)
 router.get("/settings", Controller.showSettings);
 router.post("/settings", Controller.applySettings);
-
-router.get("/logout", (req, res) => {
-  if (!req.session.user?.id) return res.redirect("/");
-  if (req.session.order) {
-    return res.redirect("/ongoing");
-  }
-  delete req.session.user;
-  res.redirect("/");
-});
-
+router.get("/logout", Controller.logOut);
 ///testing
 router.get("/testingProfiles/:point", (req, res) => {
   let { point } = req.params

@@ -192,10 +192,12 @@ class Controller {
         if (search) {
             // options.where.destination = { [Op.iLike]: `%${search}%` }
             // options.where.pickupAt = { [Op.iLike]: `%${search}%` }
-            options.where = { [Op.or]: [
-                { destination: { [Op.iLike]: `%${search}%` } },
-                { pickupAt: { [Op.iLike]: `%${search}%` } }
-            ]}
+            options.where = {
+                [Op.or]: [
+                    { destination: { [Op.iLike]: `%${search}%` } },
+                    { pickupAt: { [Op.iLike]: `%${search}%` } }
+                ]
+            }
         }
 
         let drivers;
@@ -245,50 +247,61 @@ class Controller {
         }
     }
 
-    static applySettings (req, res) {
+    static applySettings(req, res) {
         if (!req.session.user?.id) return res.redirect("/");
         console.log(req.body);
         if (req.body.password?.length && !User.validPassword(req.body)) {
-          return res.render("settings", baseParam({ user: req.session.user, errors: ["Please fill the password correctly!"] }));
+            return res.render("settings", baseParam({ user: req.session.user, errors: ["Please fill the password correctly!"] }));
         }
-      
+
         const {
-          profileName, bio, address, username, email, phoneNumber, password, oldPassword
+            profileName, bio, address, username, email, phoneNumber, password, oldPassword
         } = req.body;
-      
+
         const userOptions = { username, email, };
-      
+
         if (password?.length) {
-          if (!oldPassword?.length || !compareSync(oldPassword, req.session.user.password)) {
-            return res.render("settings", baseParam({ user: req.session.user, errors: ["Invalid old password!"] }));
-          }
-      
-          userOptions.password = password;
+            if (!oldPassword?.length || !compareSync(oldPassword, req.session.user.password)) {
+                return res.render("settings", baseParam({ user: req.session.user, errors: ["Invalid old password!"] }));
+            }
+
+            userOptions.password = password;
         }
-      
+
         let tempNewUser;
         User.update(userOptions, { where: { id: req.session.user.id } })
-        .then(user => {
-          tempNewUser = user;
-          return Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.user.id } });
-        })
-        .then(profile => {
-          tempNewUser.profile = profile;
-          req.session.user = tempNewUser;
-          res.redirect("/");
-        })
-        .catch(err => {
-          console.error(err);
-          
-          // User.destroy({
-          //   where: {
-          //     email: email,
-          //   }
-          // }).catch(console.error);
-      
-          return res.render("settings", baseParam({ user: req.session.user, errors: err }));
-        });
+            .then(user => {
+                tempNewUser = user;
+                return Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.user.id } });
+            })
+            .then(profile => {
+                tempNewUser.profile = profile;
+                req.session.user = tempNewUser;
+                res.redirect("/");
+            })
+            .catch(err => {
+                console.error(err);
+
+                // User.destroy({
+                //   where: {
+                //     email: email,
+                //   }
+                // }).catch(console.error);
+
+                return res.render("settings", baseParam({ user: req.session.user, errors: err }));
+            });
     }
+
+    static logOut(req, res) {
+        if (!req.session.user?.id) return res.redirect("/");
+        if (req.session.order) {
+            return res.redirect("/ongoing");
+        }
+        delete req.session.user;
+        res.redirect("/");
+    }
+
+    
 }
 
 module.exports = Controller;
