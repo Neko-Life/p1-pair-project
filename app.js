@@ -2,7 +2,7 @@
 
 const express = require("express");
 const session = require("express-session");
-
+const PORT = process_env_PORT || 3000
 const router = require("./routes");
 
 const app = express();
@@ -22,4 +22,4 @@ app.use(session({
 
 app.use("/", router);
 
-app.listen(3000);
+app.listen(PORT);
