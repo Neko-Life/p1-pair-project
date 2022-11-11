@@ -5,12 +5,6 @@ const { Router } = require("express");
 const router = Router();
 
 //////
-const { User, Driver, Order, Profile, sequelize } = require("../models");
-const { baseParam } = require("../helper/util");
-const { compareSync } = require("bcryptjs");
-const { Op } = require("sequelize");
-const invoicer = require('../helper/invoicer')
-const { automailer, mailDetails } = require('../helper/automailer')
 const Controller = require("../controllers")
 sequelize.sync({ alter: true })
   .then(() => {
