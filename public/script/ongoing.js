@@ -28,6 +28,6 @@ if (!isNaN(time)) {
   }
   t.t = setInterval(() => {
     if (time <= 0) return end();
-    element.innerText = formatTime(time--, hours);
+    element.innerText = formatTime(--time, hours);
   }, 1000);
 }
