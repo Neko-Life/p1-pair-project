@@ -22,4 +22,4 @@ app.use(session({
 
 app.use("/", router);
 
-app.listen(3000);
+app.listen(process.env.NODE_ENV === "production" ? process.env.PORT : 3000);
