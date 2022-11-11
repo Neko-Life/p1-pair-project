@@ -4,16 +4,7 @@ const { Router } = require("express");
 
 const router = Router();
 
-//////
 const Controller = require("../controllers")
-sequelize.sync({ alter: true })
-  .then(() => {
-    console.log("==================================");
-    console.log("// Database synced successfully //");
-    console.log("==================================");
-  })
-  .catch(err => console.error(err, "<<<<<< SYNC ERROR") );
-//////
 
 router.get("/", Controller.showHome)
 router.get("/signup", Controller.showSignUpForm)

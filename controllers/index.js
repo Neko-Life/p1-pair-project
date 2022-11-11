@@ -5,6 +5,15 @@ const { Router } = require("express");
 const router = Router();
 
 //////
+sequelize.sync({ alter: true })
+  .then(() => {
+    console.log("==================================");
+    console.log("// Database synced successfully //");
+    console.log("==================================");
+  })
+  .catch(err => console.error(err, "<<<<<< SYNC ERROR") );
+//////
+
 const { User, Driver, Order, Profile, sequelize } = require("../models");
 const { baseParam } = require("../helper/util");
 const { compareSync } = require("bcryptjs");
@@ -301,7 +310,7 @@ class Controller {
         res.redirect("/");
     }
 
-    
+
 }
 
 module.exports = Controller;
