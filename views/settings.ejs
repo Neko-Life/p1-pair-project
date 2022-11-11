@@ -3,13 +3,13 @@
 <html>
 <head></head>
 <body>
-<%- include("partials/navbar", { user }) %>
+<%- include("partials/navbar", { user, profile }) %>
 
 <section>
   <div>
-    <h1><%= user.profile?.profileName || user.username %>'s Profile</h1>
+    <h1><%= profile?.profileName || user.username %>'s Profile</h1>
     <h1><%= user.role %></h1>
-    <h1>Your current point: <%= user.profile.totalPoint %></h1>
+    <h1>Your current point: <%= profile.totalPoint %></h1>
   </div>
   <% for (const data of errors) { %>
     <h3><%= data %></h3>
@@ -20,7 +20,7 @@
 	<label for="profileName">Profile Name:</label>
       </div>
       <div>
-	<input type="text" name="profileName" placeholder="Your profile name" value="<%= user.profile.profileName %>">
+	<input type="text" name="profileName" placeholder="Your profile name" value="<%= profile.profileName %>">
       </div>
     </div>
     <div>
@@ -28,7 +28,7 @@
 	<label for="bio">Bio:</label>
       </div>
       <div>
-	<textarea name="bio" placeholder="Bio"><%= user.profile.bio %></textarea>
+	<textarea name="bio" placeholder="Bio"><%= profile.bio %></textarea>
       </div>
     </div>
     <div>
@@ -36,7 +36,7 @@
 	<label for="address">Address:</label>
       </div>
       <div>
-	<input type="text" name="address" placeholder="Your Address" value="<%= user.profile.address %>">
+	<input type="text" name="address" placeholder="Your Address" value="<%= profile.address %>">
       </div>
     </div>
     <div>
@@ -60,7 +60,7 @@
 	<label for="phoneNumber">New Phone Number:</label>
       </div>
       <div>
-	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= formatPhoneNumber(user.profile.phoneNumber) %>">
+	<input type="text" name="phoneNumber" placeholder="New Phone Number" value="<%= formatPhoneNumber(profile.phoneNumber) %>">
       </div>
     </div>
     <div>

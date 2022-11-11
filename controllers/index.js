@@ -1,8 +1,5 @@
 "use strict";
 
-const { Router } = require("express");
-const router = Router();
-
 const { User, Driver, Order, Profile, sequelize } = require("../models");
 const { baseParam } = require("../helper/util");
 const { compareSync } = require("bcryptjs");
@@ -19,6 +16,30 @@ sequelize.sync({ alter: true })
     })
     .catch(err => console.error(err, "<<<<<< SYNC ERROR"));
 //////
+
+/**
+ * @type {Map<number, Profile>}
+ */
+const profiles = new Map();
+
+const getProfile = (req) => {
+  return profiles.get(req.session.user?.id);
+}
+
+const setProfile = (req, profile) => {
+  return profiles.set(req.session.user.id, profile);
+}
+
+const deleteProfile = (req) => {
+  return profiles.delete(req.session.user.id);
+}
+
+const clearSession = (req) => {
+  deleteProfile(req);
+  delete req.session.user;
+  delete req.session.order;
+  return 0;
+}
 
 class Controller {
     static showHome(req, res) {
@@ -45,7 +66,7 @@ class Controller {
                 })
                 .then(drivers => {
                     console.log(req.session.user)
-                    res.render("landing", baseParam({ user: req.session.user, drivers, errors }));
+                    res.render("landing", baseParam({ user: req.session.user, drivers, errors, profile: getProfile(req) }));
                 })
                 .catch(err => {
                     console.error(err);
@@ -101,7 +122,10 @@ class Controller {
                     return res.render("landing", baseParam({ errors: ["Invalid email or password"] }));
                 }
                 console.log(">>>>>> CORRECT PASSWORD <<<<<<<");
-                user.profile = user.Profile;
+
+		profiles.set(user.id, user.Profile); 
+
+		delete user.Profile;
                 req.session.user = user;
                 res.redirect("/");
             })
@@ -173,15 +197,15 @@ class Controller {
             .then(_ => {
                 return Order.findOne({ order: [['id', 'DESC']], include: [User, Driver] });
             })
-            .then(order => {
-                mailDetails.text = invoicer(order)
-                mailDetails.to = order.User.email
-                return automailer.sendMail(mailDetails)
-            })
+            // .then(order => {
+            //     mailDetails.text = invoicer(order)
+            //     mailDetails.to = order.User.email
+            //     return automailer.sendMail(mailDetails)
+            // })
             .then(info => {
-
                 delete req.session.order;
-                res.redirect(`/history?info=info`);
+                
+		res.redirect(`/history?info=info`);
             })
             .catch(err => {
                 console.error(err);
@@ -201,12 +225,10 @@ class Controller {
         if (search) {
             // options.where.destination = { [Op.iLike]: `%${search}%` }
             // options.where.pickupAt = { [Op.iLike]: `%${search}%` }
-            options.where = {
-                [Op.or]: [
+            options.where[Op.or] = [
                     { destination: { [Op.iLike]: `%${search}%` } },
                     { pickupAt: { [Op.iLike]: `%${search}%` } }
                 ]
-            }
         }
 
         let drivers;
@@ -217,7 +239,7 @@ class Controller {
                 return Order.findAll(options)
             })
             .then(orders => {
-                res.render('history', { orders, user: req.session.user, info, drivers })
+                res.render('history', { orders, user: req.session.user, info, drivers, profile: getProfile(req)  })
             })
             .catch(err => {
                 console.error(err);
@@ -241,18 +263,20 @@ class Controller {
             return res.redirect("/ongoing");
         }
 
-        if (!req.session.user.profile) {
+	const cachedProfile = getProfile(req);
+
+        if (!cachedProfile) {
             Profile.findOne({ where: { UserId: req.session.user.id } })
                 .then(profile => {
-                    req.session.user.profile = profile;
-                    res.render("settings", baseParam({ user: req.session.user }));
+		    setProfile(req, profile);
+                    res.render("settings", baseParam({ user: req.session.user, profile }));
                 })
                 .catch(err => {
                     console.error(err);
                     res.render("settings", baseParam({ errors: err }));
                 });
         } else {
-            res.render("settings", baseParam({ user: req.session.user }));
+            res.render("settings", baseParam({ user: req.session.user, profile: cachedProfile }));
         }
     }
 
@@ -260,7 +284,7 @@ class Controller {
         if (!req.session.user?.id) return res.redirect("/");
         console.log(req.body);
         if (req.body.password?.length && !User.validPassword(req.body)) {
-            return res.render("settings", baseParam({ user: req.session.user, errors: ["Please fill the password correctly!"] }));
+            return res.render("settings", baseParam({ user: req.session.user, errors: ["Please fill the password correctly!"], profile: getProfile(req)  }));
         }
 
         const {
@@ -271,7 +295,7 @@ class Controller {
 
         if (password?.length) {
             if (!oldPassword?.length || !compareSync(oldPassword, req.session.user.password)) {
-                return res.render("settings", baseParam({ user: req.session.user, errors: ["Invalid old password!"] }));
+                return res.render("settings", baseParam({ user: req.session.user, errors: ["Invalid old password!"], profile: getProfile(req)  }));
             }
 
             userOptions.password = password;
@@ -280,8 +304,7 @@ class Controller {
         User.update(userOptions, { where: { id: req.session.user.id } })
             .then(() => Profile.update({ profileName, bio, address, phoneNumber }, { where: { id: req.session.user.id } }))
             .then(profile => {
-		delete req.session.user;
-                delete req.session.order;
+		clearSession(req);
                 res.redirect("/");
             })
             .catch(err => {
@@ -293,7 +316,7 @@ class Controller {
                 //   }
                 // }).catch(console.error);
 
-                return res.render("settings", baseParam({ user: req.session.user, errors: err }));
+                return res.render("settings", baseParam({ user: req.session.user, errors: err, profile: getProfile(req)  }));
             });
     }
 
@@ -302,7 +325,9 @@ class Controller {
         if (req.session.order) {
             return res.redirect("/ongoing");
         }
-        delete req.session.user;
+
+	clearSession(req);
+
         res.redirect("/");
     }
 
@@ -336,8 +361,7 @@ class Controller {
 	})
       })
       .then(_ => {
-	  delete req.session.user;
-	  delete req.session.order;
+	  clearSession(req);
 	  res.redirect('/')
       })
       .catch(err => {
