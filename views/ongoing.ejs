@@ -13,6 +13,7 @@
     <title>On Going Service</title>
 </head>
 <body>
+  <%- include("partials/navbar", {user, profile}) %>
     <% if (end) {%>
         <h2>Perkiraan Waktu Tiba</h2>
         <h2><%= `00:00` %></h2>

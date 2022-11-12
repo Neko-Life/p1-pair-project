@@ -175,7 +175,7 @@ class Controller {
 
         console.log(req.session.order);
 
-        res.render('ongoing', { end, ETA });
+        res.render('ongoing', { end, ETA, user: req.session.user, profile: getProfile(req) });
     }
 
     static createNewOrder(req, res) {
@@ -186,8 +186,8 @@ class Controller {
         if (!point) point = 0;
 
         req.session.order.satisfactionPoint = point;
-        req.session.order = Order.build(req.session.order);
-        req.session.order.save()
+        const theOrder = Order.build(req.session.order);
+        theOrder.save()
             .then(_ => {
                 return Driver.increment({ totalPoint: 1 + point }, { where: { id: DriverId } })
             })
