@@ -8,13 +8,13 @@ const invoicer = require('../helper/invoicer')
 const { automailer, mailDetails } = require('../helper/automailer')
 
 //////
-sequelize.sync({ alter: true })
-    .then(() => {
-        console.log("==================================");
-        console.log("// Database synced successfully //");
-        console.log("==================================");
-    })
-    .catch(err => console.error(err, "<<<<<< SYNC ERROR"));
+//sequelize.sync({ alter: true })
+//    .then(() => {
+//        console.log("==================================");
+//        console.log("// Database synced successfully //");
+//        console.log("==================================");
+//    })
+//    .catch(err => console.error(err, "<<<<<< SYNC ERROR"));
 //////
 
 /**

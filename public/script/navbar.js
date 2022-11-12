@@ -6,11 +6,12 @@ for (const el of elements) {
   const dropdown = document.getElementById(`dropdown-${el.id}`);
   el.addEventListener("click", (event) => {
     const hidden = dropdown.classList.contains("hidden");
+    const divMenu = document.getElementById(`menu-${el.id}`);
     if (hidden) {
       dropdown.classList.remove("hidden");
-      el.classList.add("active");
+      divMenu.classList.add("active");
     } else {
-      el.classList.remove("active");
+      divMenu.classList.remove("active");
       dropdown.classList.add("hidden");
     }
   });

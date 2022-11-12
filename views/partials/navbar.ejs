@@ -1,26 +1,27 @@
 <link rel="stylesheet" type="text/css" href="/css/navbar.css">
-<nav>
-  <div>
+<link rel="stylesheet" type="text/css" href="/css/base.css">
+<nav class="flex">
+  <div class="grow">
     <a href="/">
       <h1>Go Walk Walk!</h1>
     </a>
   </div>
-  <div>
+  <div class="menu">
     <ul>
     <% if (user?.id) { %>
       <li>
-	<div>
+	<div id="menu-username" class="bg-trans-w">
 	  <span id="username" class="has-dropdown"><%= profile?.profileName || user.username %> - <%= user.role %></span>
 	</div>
 	<!-- dropdown menu -->
 	<div id="dropdown-username" class="dropdown-menu hidden absolute">
-	  <div>
+	  <div class="bg-trans-w">
 		<a href="/history">History</a>
 	  </div>
-	  <div>
+	  <div class="bg-trans-w">
 	    <a href="/settings">Profile</a>
 	  </div>
-	  <div>
+	  <div class="bg-trans-w">
 	    <a href="/logout">Logout</a>
 	  </div>
 	</div>
@@ -28,12 +29,12 @@
       </li>
       <% } else { %>
 	<li>
-	  <div>
+	  <div class="bg-trans-w">
 	    <a href="/signup">Sign Up</a>
 	  </div>
 	</li>
 	<li>
-	  <div>
+	  <div class="bg-trans-w">
 	    <a href="/">Login</a>
 	  </div>
 	</li>

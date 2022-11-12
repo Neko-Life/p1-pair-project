@@ -1,0 +1,30 @@
+.flex {
+  display: flex;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.bg-trans-w:hover {
+  background-color: white;
+  transition: .2s;
+}
+
+.hidden {
+  display: none;
+}
+
+.dropdown-menu {
+  background-color: lightgray;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.has-dropdown {
+  cursor: pointer;
+}
