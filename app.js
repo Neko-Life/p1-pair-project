@@ -54,12 +54,12 @@ const storeOptions = {
 
 if (process.env.DATABASE_URL?.length) {
   storeOptions.conString = process.env.DATABASE_URL;
-  storeOptions.dialectOptions = {
+  storeOptions.conObject = {
       ssl: {
-	  rejectUnauthorized: false
+	  rejectUnauthorized: false,
       }
-    }
-} else if (configExist) {
+    };
+  } else if (configExist) {
   const {
     username, password, database, host
   } = config;
@@ -67,9 +67,6 @@ if (process.env.DATABASE_URL?.length) {
   const poolOptions = {
     port: DB_PORT,
     user: username, password, database, host,
-    ssl: {
-    	rejectUnauthorized: false,
-    }
   };
 
   storeOptions.pool = new Pool(poolOptions);
