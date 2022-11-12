@@ -59,7 +59,10 @@ if (process.env.DATABASE_URL?.length) {
 
   const poolOptions = {
     port: DB_PORT,
-    user: username, password, database, host
+    user: username, password, database, host,
+    ssl: {
+    	rejectUnauthorized: false,
+    }
   };
 
   storeOptions.pool = new Pool(poolOptions);
