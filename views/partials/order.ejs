@@ -1,6 +1,11 @@
 <link rel="stylesheet" type="text/css" href="/css/base.css">
 <link rel="stylesheet" type="text/css" href="/css/login.css">
 <h1 class="login">Welcome <%= profile?.profileName || user.username %>!</h1>
+<% if (errors) { %>
+  <% errors.toString().split(",").forEach(el => { %>
+    <p style="color: red; font-weight: bold;"><%= el %></p>
+  <% }) %>
+<% } %>
 <form class="login" action="/go" method="POST">
   <div>
     <div class="label">

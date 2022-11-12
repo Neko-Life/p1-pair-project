@@ -7,11 +7,6 @@
 
 <section class="body content">
   <% if (user?.id) { %>
-        <% if (errors) { %>
-          <% errors.toString().split(",").forEach(el => { %>
-            <p style="color: red; font-weight: bold;"><%= el %></p>
-          <% }) %>
-        <% } %>
     <%- include("partials/order", { errors, user, profile, drivers }) %>
   <% } else { %>
     <%- include("partials/login", { errors } ) %>
