@@ -154,7 +154,7 @@ class Controller {
 
             if (!DriverId) eQuery += 'Driver must be choosed,'
 
-            res.redirect(`/?errors=${eQuery}`)
+            return res.redirect(`/?errors=${eQuery}`)
         }
         req.session.order = { type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 };
 
