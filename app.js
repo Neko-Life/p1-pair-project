@@ -48,10 +48,15 @@ if (configExist) {
 
 const PORT = process.env.PORT || config?.expressPort || 3000;
 const DB_PORT = process.env.PGPORT || config?.port || 5432;
-const storeOptions = { createTableIfMissing: true, };
+const storeOptions = {
+  createTableIfMissing: true,
+};
 
 if (process.env.DATABASE_URL?.length) {
   storeOptions.conString = process.env.DATABASE_URL;
+  storeOptions.ssl = {
+      rejectUnauthorized: false,
+  };
 } else if (configExist) {
   const {
     username, password, database, host
