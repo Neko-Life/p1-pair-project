@@ -15,6 +15,7 @@
 </head>
 <body>
     <%- include("partials/navbar.ejs", { user, profile }) %>
+    <section class="body content">
     <form action="/history" method="get">
       <input type="text" id="search" name="search" placeholder="Search Destination/Pickup Place Name">
       <input type="submit" value="Search" />
@@ -76,5 +77,6 @@
           <h3>CLEAR HISTORY</h3>
         </button>
       </a>
+  </section>
 </body>
 </html>
