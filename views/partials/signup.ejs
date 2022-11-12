@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="/css/login.css">
 <h1 class="login">Sign Up</h1>
 <% for (const data of errors) { %>
-  <h3><%= data %></h3>
+  <h3 class="error"><%= data %></h3>
 <% } %>
 <form class="login" action="/signup" method="POST">
   <div>

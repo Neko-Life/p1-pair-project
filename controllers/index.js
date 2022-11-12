@@ -156,7 +156,7 @@ class Controller {
 
             res.redirect(`/?errors=${eQuery}`)
         }
-        req.session.order = Order.build({ type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 });
+        req.session.order = { type, destination, pickupAt, DriverId, UserId: req.session.user.id, satisfactionPoint: 0 };
 
         res.redirect("/ongoing");
     }

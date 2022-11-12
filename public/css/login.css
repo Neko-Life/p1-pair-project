@@ -1,4 +1,4 @@
-form.login input, form.login select {
+form.login input, form.login select, .btn-delete, form.login textarea {
   width: calc(97% + 2px);
   border: 2px solid lightgray;
   padding: 8px;
@@ -10,12 +10,28 @@ form.login select {
   background-color: white;
 }
 
-form.login input[type="submit"], form.login select {
+form.login input[type="submit"], form.login select, .btn-delete {
   width: 100%;
 }
 
-h1.login {
+.btn-delete {
+  color: white;
+  background-color: red;
+  border: 2px solid red;
+}
+
+.btn-delete:hover {
+  background-color: white;
+  color: red;
+  transition: .2s;
+}
+
+h1.login, h3.login {
   margin: 14px 0px;
+}
+
+h3.left {
+  text-align: left;
 }
 
 form div.label {

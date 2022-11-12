@@ -4,19 +4,20 @@
 <head></head>
 <body>
 <%- include("partials/navbar", { user, profile }) %>
-
-<section>
+<link rel="stylesheet" type="text/css" href="/css/login.css">
+<link rel="stylesheet" type="text/css" href="/css/base.css">
+<section class="body content">
   <div>
-    <h1><%= profile?.profileName || user.username %>'s Profile</h1>
-    <h1><%= user.role %></h1>
-    <h1>Your current point: <%= profile.totalPoint %></h1>
+    <h1 class="login"><%= profile?.profileName || user.username %>'s Profile</h1>
+    <h3 class="login left"><%= user.role %> Customer</h3>
+    <h3 class="login left">Your current point: <%= profile.totalPoint %></h3>
   </div>
   <% for (const data of errors) { %>
-    <h3><%= data %></h3>
+    <h3 class="error"><%= data %></h3>
   <% } %>
-  <form action="/settings" method="POST">
+  <form  class="login"action="/settings" method="POST">
     <div>
-      <div>
+      <div class="label">
 	<label for="profileName">Profile Name:</label>
       </div>
       <div>
@@ -24,7 +25,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="bio">Bio:</label>
       </div>
       <div>
@@ -32,7 +33,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="address">Address:</label>
       </div>
       <div>
@@ -40,7 +41,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="username">Username:</label>
       </div>
       <div>
@@ -48,7 +49,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="email">Email:</label>
       </div>
       <div>
@@ -56,7 +57,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="phoneNumber">New Phone Number:</label>
       </div>
       <div>
@@ -64,7 +65,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="password">New password:</label>
       </div>
       <div>
@@ -72,7 +73,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="repeatPassword">Repeat new password:</label>
       </div>
       <div>
@@ -80,7 +81,7 @@
       </div>
     </div>
     <div>
-      <div>
+      <div class="label">
 	<label for="oldPassword">Old password (required to update password):</label>
       </div>
       <div>
@@ -89,7 +90,8 @@
     </div>
     <input type="submit" value="Update Profile">
   </form>
+  
+  <a href="/delete-account"><button class="btn-delete">Delete Account</button></a>
 </section>
-<a href="/delete-account">Delete Account</a>
 </body>
 </html>
