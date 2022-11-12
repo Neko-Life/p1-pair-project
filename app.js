@@ -54,9 +54,11 @@ const storeOptions = {
 
 if (process.env.DATABASE_URL?.length) {
   storeOptions.conString = process.env.DATABASE_URL;
-  storeOptions.ssl = {
-      rejectUnauthorized: false,
-  };
+  storeOptions.dialectOptions = {
+      ssl: {
+	  rejectUnauthorized: false
+      }
+    }
 } else if (configExist) {
   const {
     username, password, database, host
