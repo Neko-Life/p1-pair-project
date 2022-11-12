@@ -7,8 +7,8 @@ require('dotenv').config();
  * DATABASE_URL OPTIONAL (use config/config.json instead)
  * NODE_ENV OPTIONAL (default development)
  * COOKIE_SECURE OPTIONAL (default false)
- * PORT OPTIONAL (use config/config.json instead)
- * PGPORT OPTIONAL (use config/config.json instead)
+ * PORT OPTIONAL (use config/config.json instead, fallback 3000)
+ * PGPORT OPTIONAL (use config/config.json instead, fallback 5432)
  * SESSION_SECRET REQUIRED
  */
 const requiredEnvVars = ["SESSION_SECRET"];
@@ -46,7 +46,7 @@ if (configExist) {
   console.log("Using config:", config);
 }
 
-const PORT = process.env.PORT || config?.expressPort;
+const PORT = process.env.PORT || config?.expressPort || 3000;
 const DB_PORT = process.env.PGPORT || config?.port || 5432;
 const storeOptions = { createTableIfMissing: true, };
 
