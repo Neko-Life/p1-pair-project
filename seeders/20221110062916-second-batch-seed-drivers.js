@@ -39,7 +39,13 @@ module.exports = {
 	      phoneNumber: "088856561234",
 	      rank: "Beginner", //
 	      totalPoint: 8,
-      }
+      },
+      {
+	name: "Burung Onta",
+	      phoneNumber: "696969696969",
+	      rank: "Professional", //
+	      totalPoint: 6969,
+      },
     ].map(el => {
       el.createdAt = el.updatedAt = new Date();
       return el;

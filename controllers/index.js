@@ -142,7 +142,7 @@ class Controller {
         if (!type || !destination || !pickupAt || !DriverId || destination.replace(/ /g, "").length == 0 || pickupAt.replace(/ /g, "").length == 0) {
             let eQuery = '';
             if (!type) eQuery += 'Type of Ride must be choosed,'
-            else if (type !== 'WalkRide' && type !== 'WalkCar' && type !== 'WalkTaxi') {
+            else if (type !== "WalkBuroq" && type !== 'WalkRide' && type !== 'WalkCar' && type !== 'WalkTaxi') {
                 eQuery += 'The inputed Order Type is not registered,'
             }
 
