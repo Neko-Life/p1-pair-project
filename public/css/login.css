@@ -1,4 +1,4 @@
-form.login input, form.login select, .btn-delete, form.login textarea {
+form.login input, form.login select, .btn-delete, form.login textarea, section.login button, .login-wide-graybox {
   width: calc(97% + 2px);
   border: 2px solid lightgray;
   padding: 8px;
