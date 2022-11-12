@@ -1,45 +1,48 @@
-  <form action="/go" method="POST">
-    <div>
-      <div>
-	<label for="destination">Where do you want to go today?</label>
-      </div>
-      <div>
-	<input type="text" name="destination">
-      </div>
+<link rel="stylesheet" type="text/css" href="/css/base.css">
+<link rel="stylesheet" type="text/css" href="/css/login.css">
+<h1 class="login">Welcome <%= profile.profileName || user.username %>!</h1>
+<form class="login" action="/go" method="POST">
+  <div>
+    <div class="label">
+      <label for="destination">Where do you want to go today?</label>
     </div>
     <div>
-      <div>
-	<label for="pickupAt">Where do you want the driver to pick you up?</label>
-      </div>
-      <div>
-	<input type="text" name="pickupAt">
-      </div>
+      <input type="text" name="destination">
+    </div>
+  </div>
+  <div>
+    <div class="label">
+      <label for="pickupAt">Where do you want the driver to pick you up?</label>
     </div>
     <div>
-      <div>
-	<label for="type">Select Your Ride:</label>
-      </div>
-      <div>
-	<select name="type">
-	  <option value="" disabled selected>Select Your Ride</option>
-	  <option value="WalkRide">WalkRide</option>
-	  <option value="WalkCar">WalkCar</option>
-	  <option value="WalkTaxi">WalkTaxi</option>
-	</select>
-      </div>
+      <input type="text" name="pickupAt">
+    </div>
+  </div>
+  <div>
+    <div class="label">
+      <label for="type">Select Your Ride:</label>
     </div>
     <div>
-      <div>
-	<label for="DriverId">Select a Driver:</label>
-      </div>
-      <div>
-	<select name="DriverId">
-	  <option value="" disabled selected>Select a Driver</option>
-	  <% for (const data of drivers) { %>
-	    <option value="<%= data.id %>" ><%= data.name %> ----- <%= data.rank %></option>
-	  <% } %>
-	</select>
-      </div>
+      <select name="type">
+	<option value="" disabled selected>Select Your Ride</option>
+	<option value="WalkRide">WalkRide</option>
+	<option value="WalkCar">WalkCar</option>
+	<option value="WalkTaxi">WalkTaxi</option>
+      </select>
     </div>
-    <input type="submit" value="Go">
-  </form>
+  </div>
+  <div>
+    <div class="label">
+      <label for="DriverId">Select a Driver:</label>
+    </div>
+    <div>
+      <select name="DriverId">
+	<option value="" disabled selected>Select a Driver</option>
+	<% for (const data of drivers) { %>
+	  <option value="<%= data.id %>" ><%= data.name %> ----- <%= data.rank %></option>
+	<% } %>
+      </select>
+    </div>
+  </div>
+  <input type="submit" value="Go">
+</form>

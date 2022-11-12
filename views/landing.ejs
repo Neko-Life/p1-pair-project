@@ -12,9 +12,9 @@
             <p style="color: red; font-weight: bold;"><%= el %></p>
           <% }) %>
         <% } %>
-    <%- include("partials/order", { errors, user, drivers }) %>
+    <%- include("partials/order", { errors, user, profile, drivers }) %>
   <% } else { %>
-    <%- include("partials/login", { errors, user, drivers } ) %>
+    <%- include("partials/login", { errors } ) %>
    <% } %>
 </section>
 </body>

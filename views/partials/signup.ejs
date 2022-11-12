@@ -1,11 +1,12 @@
 <link rel="stylesheet" type="text/css" href="/css/base.css">
-<h1>Sign Up</h1>
+<link rel="stylesheet" type="text/css" href="/css/login.css">
+<h1 class="login">Sign Up</h1>
 <% for (const data of errors) { %>
   <h3><%= data %></h3>
 <% } %>
-<form action="/signup" method="POST">
+<form class="login" action="/signup" method="POST">
   <div>
-    <div>
+    <div class="label">
       <label for="username">Username:</label>
     </div>
     <div>
@@ -13,7 +14,7 @@
     </div>
   </div>
   <div>
-    <div>
+    <div class="label">
       <label for="email">Email:</label>
     </div>
     <div>
@@ -21,7 +22,7 @@
     </div>
   </div>
   <div>
-    <div>
+    <div class="label">
       <label for="phoneNumber">Phone Number:</label>
     </div>
     <div>
@@ -29,7 +30,7 @@
     </div>
   </div>
   <div>
-    <div>
+    <div class="label">
       <label for="password">Password:</label>
     </div>
     <div>
@@ -37,7 +38,7 @@
     </div>
   </div>
   <div>
-    <div>
+    <div class="label">
       <label for="repeatPassword">Repeat your password:</label>
     </div>
     <div>

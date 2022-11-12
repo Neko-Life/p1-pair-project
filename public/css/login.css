@@ -1,4 +1,4 @@
-form.login input {
+form.login input, form.login select {
   width: calc(97% + 2px);
   border: 2px solid lightgray;
   padding: 8px;
@@ -6,10 +6,18 @@ form.login input {
   margin: 6px 0px;
 }
 
-form.login input[type="submit"] {
+form.login select {
+  background-color: white;
+}
+
+form.login input[type="submit"], form.login select {
   width: 100%;
 }
 
 h1.login {
-  margin: 8px 0px;
+  margin: 14px 0px;
+}
+
+form div.label {
+  text-align: left;
 }
