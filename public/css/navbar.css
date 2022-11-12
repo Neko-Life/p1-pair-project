@@ -1,7 +1,7 @@
 nav {
   background-color: lightgray;
   padding: 0px 30px;
-  box-shadow: 0px 2px 1px 0px black;
+  box-shadow: 0px 1px 2px 0px black;
 }
 
 nav h1 {
@@ -31,7 +31,7 @@ div.menu ul li div {
 
 div.menu ul li div.dropdown-menu {
   padding: 20px;
-  box-shadow: 0px 2px 3px 0px black;
+  box-shadow: 0px 1px 3px 0px black;
 }
 
 div.active {

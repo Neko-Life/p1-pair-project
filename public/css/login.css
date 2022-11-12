@@ -1,0 +1,15 @@
+form.login input {
+  width: calc(97% + 2px);
+  border: 2px solid lightgray;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 6px 0px;
+}
+
+form.login input[type="submit"] {
+  width: 100%;
+}
+
+h1.login {
+  margin: 8px 0px;
+}
