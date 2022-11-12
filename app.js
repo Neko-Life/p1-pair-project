@@ -55,6 +55,7 @@ const storeOptions = {
 if (process.env.DATABASE_URL?.length) {
   storeOptions.conString = process.env.DATABASE_URL;
   storeOptions.conObject = {
+      connectionString: process.env.DATABASE_URL,
       ssl: {
 	  rejectUnauthorized: false,
       }
