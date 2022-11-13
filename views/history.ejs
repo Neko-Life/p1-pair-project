@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/history.css">
     <style>
         table, th, td {border: 1px solid black;}
         .checked {
@@ -16,67 +17,74 @@
 <body>
     <%- include("partials/navbar.ejs", { user, profile }) %>
     <section class="body content">
-    <form action="/history" method="get">
-      <input type="text" id="search" name="search" placeholder="Search Destination/Pickup Place Name">
-      <input type="submit" value="Search" />
+    <h1 class="title">History</h1>
+    <% if (info) { %>
+      <h2 class="no-margin">Invoice Already Sent</h2>
+      <h5 class="no-margin">Notice: Demo email service has been disabled to avoid spam.</h5>
+    <% } %>
+    <form class="flex" action="/history" method="get">
+      <div class="flex width100">
+	<input class="search grow" type="text" id="search" name="search" placeholder="Search Destination/Pickup Place Name">
+	<input class="btn-search" type="submit" value="Search" />
+      </div>
     </form>
     
-    <form action="/history" method="get">
-      <select name="DriverId" id="DriverId">
-        <option value="" disabled selected>Filter by Driver</option>
-        <% drivers.forEach((el, i) => { %>
-          <option value="<%= el.id %>"><%= el.name %></option>
-        <% }) %>
-      </select>
-      <select name="point" id="point">
-        <option value="" disabled selected>Filter by Rating</option>
-        <option value="0">Not Rated <span class="fa fa-star checked"></span></option>
-        <option value="1">1 Star </option>
-        <option value="2">2 Stars </option>
-        <option value="3">3 Stars </option>
-        <option value="4">4 Stars </option>
-        <option value="5">5 Stars </option>
-      </select>
-      <input type="submit" value="Filter" />
-    </form><br>
-
-    <% if (info) { %>
-      <h2>Invoice Already Sent</h2>
-      <h5>Notice: Demo email service has been disabled to avoid spam.</h5>
-    <% } else {%>
-      <br><br>
-    <% } %>
+    <form class="flex" action="/history" method="get">
+      <div class="flex width100">
+	<select class="filter grow" name="DriverId" id="DriverId">
+	  <option value="" disabled selected>Filter by Driver</option>
+	  <% drivers.forEach((el, i) => { %>
+	    <option value="<%= el.id %>"><%= el.name %></option>
+	  <% }) %>
+	</select>
+      </div>
+      <span class="separator"></span>
+      <div class="flex width100">
+	<select class="filter grow" name="point" id="point">
+	  <option value="" disabled selected>Filter by Rating</option>
+	  <option value="0">Not Rated <span class="fa fa-star checked"></span></option>
+	  <option value="1">1 Star </option>
+	  <option value="2">2 Stars </option>
+	  <option value="3">3 Stars </option>
+	  <option value="4">4 Stars </option>
+	  <option value="5">5 Stars </option>
+	</select>
+      </div>
+      <div>
+	<input class="btn-filter" type="submit" value="Filter" />
+      </div>
+    </form>
 
     <table>
-        <tr>
-          <th>No</th>
-          <th>Driver</th>
-          <th>Order Id</th>
-          <th>Pickup</th>
-          <th>Destination</th>
-          <th>Rating</th>
-        </tr>
-        <% orders.forEach((el, i) => { %>
-        <tr>
-          <td><%= ++i %></td>
-          <td><%= el.Driver.dataValues.rank %> - <%= el.Driver.dataValues.name %></td>
-          <td><%= el.id %></td>
-          <td><%= el.pickupAt %></td>
-          <td><%= el.destination %></td>
-          <% if (el.satisfactionPoint == 0) { %>
-            <td>Not Rated</td>
-          <% } else { %>
-            <td><%= el.satisfactionPoint %><span class="fa fa-star checked"></span></td>
-          <% } %>
-        </tr>
-        <% }) %>
-      </table> 
+      <tr>
+	<th>No</th>
+	<th>Driver</th>
+	<th>Order Id</th>
+	<th>Pickup</th>
+	<th>Destination</th>
+	<th>Rating</th>
+      </tr>
+      <% orders.forEach((el, i) => { %>
+      <tr>
+	<td><%= ++i %></td>
+	<td><%= el.Driver.dataValues.rank %> - <%= el.Driver.dataValues.name %></td>
+	<td><%= el.id %></td>
+	<td><%= el.pickupAt %></td>
+	<td><%= el.destination %></td>
+	<% if (el.satisfactionPoint == 0) { %>
+	  <td>Not Rated</td>
+	<% } else { %>
+	  <td><%= el.satisfactionPoint %><span class="fa fa-star checked"></span></td>
+	<% } %>
+      </tr>
+      <% }) %>
+    </table> 
 
-      <a href="/history/clear">
-        <button>
-          <h3>CLEAR HISTORY</h3>
-        </button>
-      </a>
+    <a href="/history/clear">
+      <button>
+	<h3>CLEAR HISTORY</h3>
+      </button>
+    </a>
   </section>
 </body>
 </html>

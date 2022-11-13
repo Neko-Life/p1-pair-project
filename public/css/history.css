@@ -1,0 +1,22 @@
+select.filter, input.search, .btn-filter, .btn-search {
+  border: 2px solid lightgray;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 6px 0px;
+}
+
+.btn-filter, .btn-search {
+  margin-left: 10px;
+}
+
+.btn-filter {
+  padding: 8px 12px;
+}
+
+h1.title {
+  margin: 14px 0px;
+}
+
+select.filter, input.search {
+
+}

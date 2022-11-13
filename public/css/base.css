@@ -15,6 +15,10 @@
   display: none;
 }
 
+.width100 {
+  width: 100%;
+}
+
 .dropdown-menu {
   background-color: lightgray;
   padding: 20px;
@@ -40,4 +44,8 @@ section.content {
 
 .error {
   color: red;
+}
+
+span.separator {
+  margin-right: 10px;
 }
