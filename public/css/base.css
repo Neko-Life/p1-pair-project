@@ -29,7 +29,7 @@
   position: absolute;
 }
 
-.has-dropdown {
+.has-dropdown, a, input[type="submit"], a button {
   cursor: pointer;
 }
 

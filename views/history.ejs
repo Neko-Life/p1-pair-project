@@ -6,12 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/history.css">
-    <style>
-        table, th, td {border: 1px solid black;}
-        .checked {
-            color: orange;
-        }
-    </style>
     <title>Orders History</title>
 </head>
 <body>
@@ -56,32 +50,36 @@
     </form>
 
     <table>
-      <tr>
-	<th>No</th>
-	<th>Driver</th>
-	<th>Order Id</th>
-	<th>Pickup</th>
-	<th>Destination</th>
-	<th>Rating</th>
-      </tr>
+      <thead>
+	<tr class="alternate">
+	  <th>No</th>
+	  <th>Driver</th>
+	  <th>Order Id</th>
+	  <th>Pickup</th>
+	  <th>Destination</th>
+	  <th>Rating</th>
+	</tr>
+      </thead>
+      <tbody>
       <% orders.forEach((el, i) => { %>
-      <tr>
-	<td><%= ++i %></td>
-	<td><%= el.Driver.dataValues.rank %> - <%= el.Driver.dataValues.name %></td>
-	<td><%= el.id %></td>
-	<td><%= el.pickupAt %></td>
-	<td><%= el.destination %></td>
-	<% if (el.satisfactionPoint == 0) { %>
-	  <td>Not Rated</td>
-	<% } else { %>
-	  <td><%= el.satisfactionPoint %><span class="fa fa-star checked"></span></td>
-	<% } %>
-      </tr>
+	<tr <%= i % 2 === 1 ? `class=alternate` : ""%>>
+	  <td><%= ++i %></td>
+	  <td><%= el.Driver.dataValues.rank %> - <%= el.Driver.dataValues.name %></td>
+	  <td><%= el.id %></td>
+	  <td><%= el.pickupAt %></td>
+	  <td><%= el.destination %></td>
+	  <% if (el.satisfactionPoint == 0) { %>
+	    <td>Not Rated</td>
+	  <% } else { %>
+	    <td><%= el.satisfactionPoint %><span class="fa fa-star checked"></span></td>
+	  <% } %>
+	</tr>
       <% }) %>
+      </tbody>
     </table> 
 
     <a href="/history/clear">
-      <button>
+      <button class="btn-filter clear-history">
 	<h3>CLEAR HISTORY</h3>
       </button>
     </a>
