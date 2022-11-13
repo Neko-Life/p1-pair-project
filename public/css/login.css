@@ -7,7 +7,6 @@ form.login input, form.login select, .btn-delete, form.login textarea, section.l
 }
 
 form.login select {
-  background-color: white;
 }
 
 form.login input[type="submit"], form.login select, .btn-delete {

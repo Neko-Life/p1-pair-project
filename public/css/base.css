@@ -29,8 +29,12 @@
   position: absolute;
 }
 
-.has-dropdown, a, input[type="submit"], a button {
+.has-dropdown, a, input[type="submit"], a button, select {
   cursor: pointer;
+}
+
+select {
+  background-color: white;
 }
 
 section.content {
@@ -48,4 +52,8 @@ section.content {
 
 span.separator {
   margin-right: 10px;
+}
+
+.no-margin {
+  margin: 0px;
 }
